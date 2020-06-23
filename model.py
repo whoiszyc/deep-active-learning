@@ -10,6 +10,8 @@ def get_net(name):
         return Net2
     elif name == 'CIFAR10':
         return Net3
+    elif name == 'psse':
+        return Net4
 
 class Net1(nn.Module):
     def __init__(self):
@@ -75,6 +77,29 @@ class Net3(nn.Module):
         x = F.dropout(e1, training=self.training)
         x = self.fc2(x)
         return x, e1
+
+    def get_embedding_dim(self):
+        return 50
+
+class Net4(nn.Module):
+    def __init__(self):
+        super(Net4, self).__init__()
+        #TODO: auto feature and label numbers
+        n_feature = 56
+        n_label = 1
+        self.fc1 = nn.Linear(n_feature, 100)
+        self.fc2 = nn.Linear(100, 200)
+        self.fc3 = nn.Linear(200, 200)
+        self.fc4 = nn.Linear(200, 50)
+        self.out = nn.Linear(50, n_label)
+
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = F.relu(self.fc4(x))
+        x = F.sigmoid(self.out(x))  # softmax   sigmoid
+        return x, 0
 
     def get_embedding_dim(self):
         return 50

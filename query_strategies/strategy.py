@@ -24,47 +24,75 @@ class Strategy:
 
     def _train(self, epoch, loader_tr, optimizer):
         self.clf.train()
+        loss_func = torch.nn.BCELoss()  # ZYC
         for batch_idx, (x, y, idxs) in enumerate(loader_tr):
-            x, y = x.to(self.device), y.to(self.device)
+            # x, y = x.to(self.device), y.to(self.device)
             optimizer.zero_grad()
             out, e1 = self.clf(x)
-            loss = F.cross_entropy(out, y)
+            # loss = F.cross_entropy(out, y) # out.type()=float and y.type()=long
+            loss = loss_func(out, y)  # ZYC
             loss.backward()
             optimizer.step()
+        # print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
 
     def train(self):
         n_epoch = self.args['n_epoch']
         self.clf = self.net().to(self.device)
-        optimizer = optim.SGD(self.clf.parameters(), **self.args['optimizer_args'])
-
+        # optimizer = optim.SGD(self.clf.parameters(), **self.args['optimizer_args'])
+        optimizer = optim.Adam(self.clf.parameters(), lr=1e-3)  # ZYC: learning rate is one of the key
         idxs_train = np.arange(self.n_pool)[self.idxs_lb]
         loader_tr = DataLoader(self.handler(self.X[idxs_train], self.Y[idxs_train], transform=self.args['transform']),
                             shuffle=True, **self.args['loader_tr_args'])
-
+        print('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
         for epoch in range(1, n_epoch+1):
             self._train(epoch, loader_tr, optimizer)
 
-    def predict(self, X, Y):
+    def predict(self, X, Y, flag=0):
+        # for base prediction
+        if flag == 1:
+            print("Predict using untrained model")
+            self.clf = self.net().to(self.device)
+        else:
+            print("Predict using trained model")
+
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
-
-        self.clf.eval()
+        # self.clf.eval()
         P = torch.zeros(len(Y), dtype=Y.dtype)
         with torch.no_grad():
             for x, y, idxs in loader_te:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
-
                 pred = out.max(1)[1]
+                pred = pred.float()      # ZYC
                 P[idxs] = pred.cpu()
-
         return P
+
+
+    def predict_zyc(self, X, Y, flag=0):
+        # for base prediction
+        if flag == 1:
+            print("Predict using untrained model")
+            self.clf = self.net().to(self.device)
+        else:
+            print("Predict using trained model")
+
+        # Test using all data
+        X_test_t = torch.FloatTensor(X)
+        y_hat_test, _ = self.clf(X_test_t)
+
+        y_hat_class = y_hat_test.round()
+        comp = Y == y_hat_class
+        accuracy = comp.sum().numpy() / len(Y)
+        print("Accuracy: {}".format(accuracy))
+
+
 
     def predict_prob(self, X, Y):
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
 
-        self.clf.eval()
+        # self.clf.eval()
         probs = torch.zeros([len(Y), len(np.unique(Y))])
         with torch.no_grad():
             for x, y, idxs in loader_te:

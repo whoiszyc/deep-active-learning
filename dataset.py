@@ -3,6 +3,8 @@ import torch
 from torchvision import datasets
 from torch.utils.data import Dataset
 from PIL import Image
+import pickle
+import pandas as pd
 
 def get_dataset(name):
     if name == 'MNIST':
@@ -13,6 +15,70 @@ def get_dataset(name):
         return get_SVHN()
     elif name == 'CIFAR10':
         return get_CIFAR10()
+    elif name == 'iris':
+        return get_local_pkl(name)
+    elif name == 'psse':
+        return get_local_csv(name)
+
+
+def get_local_csv(name):
+    """
+    data preprocessing
+    """
+    print("read X Y data frame from csv")
+    data_x = pd.read_csv('data/data_x.csv')
+    data_y = pd.read_csv('data/data_y.csv')
+
+    # transfer data into matrices (tensor)
+    print("convert data to numpy matrix")
+    Full_Data = data_x.to_numpy()
+    Full_Label = data_y.to_numpy()
+
+    # # Randomly permute a sequence, or return a permuted range.
+    indecs = np.random.permutation(len(Full_Data))
+    Full_Data = Full_Data[indecs]
+    Full_Label = Full_Label[indecs]
+
+    # get dimension
+    n_sample, n_feature = Full_Data.shape
+    _, n_label = Full_Label.shape
+
+    # create balanced data
+    idx_zero = np.where(Full_Label == 0)[0]
+    idx_one = np.where(Full_Label == 1)[0]
+    idx_zero_part = idx_zero[:len(idx_one)]
+    idx_eq = np.concatenate((idx_one, idx_zero_part), axis=None)
+    Full_Data_eq = Full_Data[idx_eq]
+    Full_Label_eq = Full_Label[idx_eq]
+
+    X_tr = Full_Data
+    Y_tr = Full_Label
+    X_te = Full_Data_eq
+    Y_te = Full_Label_eq
+
+    X_tr = torch.FloatTensor(X_tr)
+    Y_tr = torch.FloatTensor(Y_tr)
+    X_te = torch.FloatTensor(X_te)
+    Y_te = torch.FloatTensor(Y_te)
+
+    return X_tr, Y_tr, X_te, Y_te
+
+
+def get_local_pkl(name):
+    # open a file, where you stored the pickled data
+    file = open(name, 'rb')
+    # dump information to that file
+    data = pickle.load(file)
+    # close the file
+    file.close()
+    print('Loading the pickled data complete')
+    data_size = len(data['data'])
+    data_size_tr = data_size * 0.8
+    X_tr = data['data'][0:data_size_tr]
+    Y_tr = data['target'][0:data_size_tr]
+    X_te = data['data']
+    Y_te = data['target']
+    return X_tr, Y_tr, X_te, Y_te
 
 def get_MNIST():
     raw_tr = datasets.MNIST('./MNIST', train=True, download=True)
@@ -59,6 +125,8 @@ def get_handler(name):
         return DataHandler2
     elif name == 'CIFAR10':
         return DataHandler3
+    elif name == 'psse':
+        return DataHandler4
 
 class DataHandler1(Dataset):
     def __init__(self, X, Y, transform=None):
@@ -102,6 +170,21 @@ class DataHandler3(Dataset):
         x, y = self.X[index], self.Y[index]
         if self.transform is not None:
             x = Image.fromarray(x)
+            x = self.transform(x)
+        return x, y, index
+
+    def __len__(self):
+        return len(self.X)
+
+class DataHandler4(Dataset):
+    def __init__(self, X, Y, transform=None):
+        self.X = X
+        self.Y = Y
+        self.transform = transform
+
+    def __getitem__(self, index):
+        x, y = self.X[index], self.Y[index]
+        if self.transform is not None:
             x = self.transform(x)
         return x, y, index
 
