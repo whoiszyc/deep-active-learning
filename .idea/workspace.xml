@@ -2,17 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15130e70-29a2-43bb-807f-e35ccd2a4bd8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data/data_x.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/data_y.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/iris.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/mnist_keras.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_data_load.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_pytorch.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_pytorch_solv.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_pytorch_solv_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/query_strategies/margin_sampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_strategies/margin_sampling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/query_strategies/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/query_strategies/strategy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
@@ -60,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="105" selection-start-line="105" selection-end-line="105" />
+            <state relative-caret-position="346">
+              <caret line="133" column="41" selection-start-line="133" selection-start-column="41" selection-end-line="133" selection-end-column="41" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -73,22 +62,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/query_strategies/margin_sampling.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/query_strategies/strategy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="65" selection-start-line="65" selection-end-line="65" />
+            <state relative-caret-position="148">
+              <caret line="70" column="28" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="28" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -141,8 +118,8 @@
         <option value="$PROJECT_DIR$/dataset.py" />
         <option value="$PROJECT_DIR$/test_pytorch_solv_1.py" />
         <option value="$PROJECT_DIR$/model.py" />
-        <option value="$PROJECT_DIR$/query_strategies/strategy.py" />
         <option value="$PROJECT_DIR$/test_pytorch_solv.py" />
+        <option value="$PROJECT_DIR$/query_strategies/strategy.py" />
         <option value="$PROJECT_DIR$/run.py" />
       </list>
     </option>
@@ -183,6 +160,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../BatchBALD" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -333,6 +311,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25553215" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -358,7 +337,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/run.py</url>
-          <line>150</line>
+          <line>146</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -551,16 +530,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_pytorch_solv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/query_strategies/margin_sampling.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -571,10 +540,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
+    <entry file="file://$PROJECT_DIR$/test_pytorch_solv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
+        <state relative-caret-position="306">
+          <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -603,8 +572,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/query_strategies/strategy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        <state relative-caret-position="148">
+          <caret line="70" column="28" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="133" column="41" selection-start-line="133" selection-start-column="41" selection-end-line="133" selection-end-column="41" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

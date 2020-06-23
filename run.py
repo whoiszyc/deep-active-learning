@@ -103,19 +103,16 @@ def main():
     print(type(strategy).__name__)
 
     # try to use untrained network to see the base accuracy
-    P = strategy.predict(X_te, Y_te, flag=1)
+    P = strategy.predict_single_label(X_te, Y_te, flag=1)
     acc = np.zeros(NUM_ROUND + 1)
     Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
     acc[0] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
     print('Base accuracy {}'.format(acc[0]))
 
-    strategy.predict_zyc(X_te, Y_te, flag=1)
-
     # round 0 accuracy
     strategy.train()
-    strategy.predict_zyc(X_te, Y_te, flag=0)
 
-    P = strategy.predict(X_te, Y_te)
+    P = strategy.predict_single_label(X_te, Y_te)
     acc = np.zeros(NUM_ROUND+1)
     # acc[0] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
     Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
@@ -132,10 +129,9 @@ def main():
         # update
         strategy.update(idxs_lb)
         strategy.train()
-        strategy.predict_zyc(X_te, Y_te, flag=0)
 
         # round accuracy
-        P = strategy.predict(X_te, Y_te)
+        P = strategy.predict_single_label(X_te, Y_te)
         # acc[rd] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
         Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
         acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te) # ZYC

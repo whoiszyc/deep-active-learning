@@ -64,12 +64,11 @@ class Strategy:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
                 pred = out.max(1)[1]
-                pred = pred.float()      # ZYC
                 P[idxs] = pred.cpu()
         return P
 
 
-    def predict_zyc(self, X, Y, flag=0):
+    def predict_single_label(self, X, Y, flag=0):
         # for base prediction
         if flag == 1:
             print("Predict using untrained model")
@@ -77,14 +76,17 @@ class Strategy:
         else:
             print("Predict using trained model")
 
-        # Test using all data
-        X_test_t = torch.FloatTensor(X)
-        y_hat_test, _ = self.clf(X_test_t)
-
-        y_hat_class = y_hat_test.round()
-        comp = Y == y_hat_class
-        accuracy = comp.sum().numpy() / len(Y)
-        print("Accuracy: {}".format(accuracy))
+        loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
+                               shuffle=False, **self.args['loader_te_args'])
+        # self.clf.eval()
+        P = torch.zeros(len(Y), dtype=Y.dtype)
+        with torch.no_grad():
+            for x, y, idxs in loader_te:
+                x, y = x.to(self.device), y.to(self.device)
+                out, e1 = self.clf(x)
+                pred = out.round()
+                P[idxs] = pred.cpu()
+        return P
 
 
 
@@ -120,6 +122,7 @@ class Strategy:
         probs /= n_drop
         
         return probs
+
 
     def predict_prob_dropout_split(self, X, Y, n_drop):
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
