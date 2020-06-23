@@ -85,7 +85,7 @@ class Strategy:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
                 pred = out.round()
-                P[idxs] = pred.cpu()
+                P[idxs] = pred.transpose(0, 1)
         return P
 
 
@@ -100,10 +100,11 @@ class Strategy:
             for x, y, idxs in loader_te:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
-                prob = F.softmax(out, dim=1)
+                prob = F.softmax(out, dim=0)   # for single label, the softmax dim=0
                 probs[idxs] = prob.cpu()
         
         return probs
+
 
     def predict_prob_dropout(self, X, Y, n_drop):
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),

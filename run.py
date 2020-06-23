@@ -104,10 +104,9 @@ def main():
 
     # try to use untrained network to see the base accuracy
     P = strategy.predict_single_label(X_te, Y_te, flag=1)
-    acc = np.zeros(NUM_ROUND + 1)
     Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-    acc[0] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-    print('Base accuracy {}'.format(acc[0]))
+    acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
+    print('Base accuracy {}'.format(acc))
 
     # round 0 accuracy
     strategy.train()
