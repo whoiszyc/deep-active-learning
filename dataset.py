@@ -61,6 +61,14 @@ def get_local_csv(name):
     X_te = torch.FloatTensor(X_te)
     Y_te = torch.FloatTensor(Y_te)
 
+    # we change label data to long tensor if we consider it as a multi-label classification
+    Y_tr = Y_tr.transpose(0, 1)
+    Y_tr = Y_tr.long()
+    Y_te = Y_te.transpose(0, 1)
+    Y_te = Y_te.long()
+    Y_tr = Y_tr[0]
+    Y_te = Y_te[0]
+
     return X_tr, Y_tr, X_te, Y_te
 
 

@@ -1,4 +1,6 @@
+import pandas as pd
 import numpy as np
+from datetime import datetime
 from dataset import get_dataset, get_handler
 from model import get_net
 from torchvision import transforms
@@ -11,8 +13,8 @@ def main():
     # parameters
     SEED = 1
 
-    NUM_INIT_LB = 100
-    NUM_QUERY = 20
+    NUM_INIT_LB = 100000
+    NUM_QUERY = 20000
     NUM_ROUND = 20
     BINARY_LABEL = 0
 
@@ -57,8 +59,8 @@ def main():
 
     # load dataset
     X_tr, Y_tr, X_te, Y_te = get_dataset(DATA_NAME)
-    X_tr = X_tr[:300]
-    Y_tr = Y_tr[:300]
+    # X_tr = X_tr[:300]
+    # Y_tr = Y_tr[:300]
 
     # start experiment
     n_pool = len(Y_tr)
@@ -117,8 +119,7 @@ def main():
 
     if BINARY_LABEL == 0:
         P = strategy.predict(X_te, Y_te)
-        acc = np.zeros(NUM_ROUND + 1)
-        acc[0] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
+        acc[0] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
         print('Round 0\ntesting accuracy {}'.format(acc[0]))
     elif BINARY_LABEL == 0:
         P = strategy.predict_binary(X_te, Y_te)
@@ -140,19 +141,23 @@ def main():
 
         if BINARY_LABEL == 0:
             P = strategy.predict(X_te, Y_te)
-            acc = np.zeros(NUM_ROUND + 1)
             acc[rd] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-            print('Round 0\ntesting accuracy {}'.format(acc[rd]))
+            print('testing accuracy {}'.format(acc[rd]))
         elif BINARY_LABEL == 0:
             P = strategy.predict_binary(X_te, Y_te)
             Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
             acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-            print('Round 0\ntesting accuracy {}'.format(acc[rd]))
+            print('testing accuracy {}'.format(acc[rd]))
 
     # print results
     print('SEED {}'.format(SEED))
     print(type(strategy).__name__)
     print(acc)
+
+    now = datetime.now()
+    dt_string = now.strftime("%Y_%m_%d_%H_%M")
+    acc_pd = pd.DataFrame
+    acc_pd.to_csv('acc_run_SEED_{}__'.format(SEED) + dt_string + '.csv')
 
 
 if __name__ == '__main__':

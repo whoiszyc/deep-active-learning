@@ -57,11 +57,11 @@ class Strategy:
         print('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
 
         if flag_binary == 0:
-            print("Train multi-label task")
+            print("Train multi-label task using cross-entropy")
             for epoch in range(1, n_epoch+1):
                 self._train(epoch, loader_tr, optimizer)
         elif flag_binary == 1:
-            print("Train binary label task")
+            print("Train binary label task using binary cross-entropy")
             for epoch in range(1, n_epoch + 1):
                 self._train_binary(epoch, loader_tr, optimizer)
         else:
@@ -84,6 +84,7 @@ class Strategy:
             for x, y, idxs in loader_te:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
+                # get maximum value along axis 1, return the values and indices
                 pred = out.max(1)[1]
                 P[idxs] = pred.cpu()
         return P
@@ -121,9 +122,8 @@ class Strategy:
             for x, y, idxs in loader_te:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
-                prob = F.softmax(out, dim=0)   # for single label, the softmax dim=0
+                prob = F.softmax(out, dim=1)   # perform softmax operation along dimension 1 (label dimension)
                 probs[idxs] = prob.cpu()
-        
         return probs
 
 
