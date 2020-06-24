@@ -16,7 +16,7 @@ def main(para_seed=1):
     # parameters
     SEED = para_seed
 
-    NUM_INIT_LB = 50000
+    NUM_INIT_LB = 10000
     NUM_QUERY = 10000
     NUM_ROUND = 20
     BINARY_LABEL = 0
@@ -88,9 +88,9 @@ def main(para_seed=1):
     handler = get_handler(DATA_NAME)
 
     # strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
+    # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
