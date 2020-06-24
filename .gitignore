@@ -1,5 +1,4 @@
 *.pyc
-.idea\**
 .idea/**
 data/**
 MNIST/**
