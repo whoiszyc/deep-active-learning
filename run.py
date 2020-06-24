@@ -14,6 +14,7 @@ def main():
     NUM_INIT_LB = 100
     NUM_QUERY = 20
     NUM_ROUND = 20
+    BINARY_LABEL = 0
 
     DATA_NAME = 'psse'
     # DATA_NAME = 'MNIST'
@@ -102,21 +103,29 @@ def main():
     print('SEED {}'.format(SEED))
     print(type(strategy).__name__)
 
-    # try to use untrained network to see the base accuracy
-    P = strategy.predict_single_label(X_te, Y_te, flag=1)
-    Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-    acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-    print('Base accuracy {}'.format(acc))
+    # # try to use untrained network to see the base accuracy
+    # P = strategy.predict_binary(X_te, Y_te, flag=1)
+    # Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
+    # acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
+    # print('Base accuracy {}'.format(acc))
+
+    # record accuracy
+    acc = np.zeros(NUM_ROUND + 1)
 
     # round 0 accuracy
-    strategy.train()
+    strategy.train(flag_binary=BINARY_LABEL)
 
-    P = strategy.predict_single_label(X_te, Y_te)
-    acc = np.zeros(NUM_ROUND+1)
-    # acc[0] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
-    Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-    acc[0] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-    print('Round 0\ntesting accuracy {}'.format(acc[0]))
+    if BINARY_LABEL == 0:
+        P = strategy.predict(X_te, Y_te)
+        acc = np.zeros(NUM_ROUND + 1)
+        acc[0] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
+        print('Round 0\ntesting accuracy {}'.format(acc[0]))
+    elif BINARY_LABEL == 0:
+        P = strategy.predict_binary(X_te, Y_te)
+        Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
+        acc[0] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
+        print('Round 0\ntesting accuracy {}'.format(acc[0]))
+
 
     for rd in range(1, NUM_ROUND+1):
         print('Round {}'.format(rd))
@@ -127,14 +136,18 @@ def main():
 
         # update
         strategy.update(idxs_lb)
-        strategy.train()
+        strategy.train(flag_binary=BINARY_LABEL)
 
-        # round accuracy
-        P = strategy.predict_single_label(X_te, Y_te)
-        # acc[rd] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-        Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-        acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te) # ZYC
-        print('testing accuracy {}'.format(acc[rd]))
+        if BINARY_LABEL == 0:
+            P = strategy.predict(X_te, Y_te)
+            acc = np.zeros(NUM_ROUND + 1)
+            acc[rd] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+            print('Round 0\ntesting accuracy {}'.format(acc[rd]))
+        elif BINARY_LABEL == 0:
+            P = strategy.predict_binary(X_te, Y_te)
+            Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
+            acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
+            print('Round 0\ntesting accuracy {}'.format(acc[rd]))
 
     # print results
     print('SEED {}'.format(SEED))

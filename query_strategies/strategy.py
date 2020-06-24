@@ -22,7 +22,7 @@ class Strategy:
     def update(self, idxs_lb):
         self.idxs_lb = idxs_lb
 
-    def _train(self, epoch, loader_tr, optimizer):
+    def _train_binary(self, epoch, loader_tr, optimizer):
         self.clf.train()
         loss_func = torch.nn.BCELoss()  # ZYC
         for batch_idx, (x, y, idxs) in enumerate(loader_tr):
@@ -35,7 +35,18 @@ class Strategy:
             optimizer.step()
         # print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
 
-    def train(self):
+    def _train(self, epoch, loader_tr, optimizer):
+        self.clf.train()
+        for batch_idx, (x, y, idxs) in enumerate(loader_tr):
+            # x, y = x.to(self.device), y.to(self.device)
+            optimizer.zero_grad()
+            out, e1 = self.clf(x)
+            loss = F.cross_entropy(out, y) # out.type()=float and y.type()=long
+            loss.backward()
+            optimizer.step()
+        # print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
+
+    def train(self, flag_binary=0):
         n_epoch = self.args['n_epoch']
         self.clf = self.net().to(self.device)
         # optimizer = optim.SGD(self.clf.parameters(), **self.args['optimizer_args'])
@@ -44,8 +55,18 @@ class Strategy:
         loader_tr = DataLoader(self.handler(self.X[idxs_train], self.Y[idxs_train], transform=self.args['transform']),
                             shuffle=True, **self.args['loader_tr_args'])
         print('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
-        for epoch in range(1, n_epoch+1):
-            self._train(epoch, loader_tr, optimizer)
+
+        if flag_binary == 0:
+            print("Train multi-label task")
+            for epoch in range(1, n_epoch+1):
+                self._train(epoch, loader_tr, optimizer)
+        elif flag_binary == 1:
+            print("Train binary label task")
+            for epoch in range(1, n_epoch + 1):
+                self._train_binary(epoch, loader_tr, optimizer)
+        else:
+            print("Wrong flag")
+
 
     def predict(self, X, Y, flag=0):
         # for base prediction
@@ -68,7 +89,7 @@ class Strategy:
         return P
 
 
-    def predict_single_label(self, X, Y, flag=0):
+    def predict_binary(self, X, Y, flag=0):
         # for base prediction
         if flag == 1:
             print("Predict using untrained model")

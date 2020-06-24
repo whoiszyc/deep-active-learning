@@ -86,7 +86,7 @@ class Net4(nn.Module):
         super(Net4, self).__init__()
         #TODO: auto feature and label numbers
         n_feature = 56
-        n_label = 1
+        n_label = 2
         self.fc1 = nn.Linear(n_feature, 100)
         self.fc2 = nn.Linear(100, 200)
         self.fc3 = nn.Linear(200, 200)
@@ -98,7 +98,7 @@ class Net4(nn.Module):
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
         x = F.relu(self.fc4(x))
-        x = F.sigmoid(self.out(x))  # softmax   sigmoid
+        x = self.out(x)  # softmax   sigmoid
         return x, 0
 
     def get_embedding_dim(self):
