@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import time
 from dataset import get_dataset, get_handler
 from model import get_net
 from torchvision import transforms
@@ -9,13 +10,13 @@ from query_strategies import RandomSampling, LeastConfidence, MarginSampling, En
                                 LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
                                 KMeansSampling, KCenterGreedy, BALDDropout, CoreSet, \
                                 AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning
-def main():
+def main(para_seed=1):
     # parameters
-    SEED = 1
+    SEED = para_seed
 
-    NUM_INIT_LB = 100000
-    NUM_QUERY = 20000
-    NUM_ROUND = 20
+    NUM_INIT_LB = 50000
+    NUM_QUERY = 10000
+    NUM_ROUND = 10
     BINARY_LABEL = 0
 
     DATA_NAME = 'psse'
@@ -85,8 +86,8 @@ def main():
 
     # strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
-    strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
@@ -155,10 +156,12 @@ def main():
     print(acc)
 
     now = datetime.now()
-    dt_string = now.strftime("%Y_%m_%d_%H_%M")
-    acc_pd = pd.DataFrame
-    acc_pd.to_csv('acc_run_SEED_{}__'.format(SEED) + dt_string + '.csv')
+    dt_string = now.strftime("__%Y_%m_%d_%H_%M")
+    acc_pd = pd.DataFrame(acc)
+    acc_pd.to_csv('acc_SEED_{}__'.format(SEED) + type(strategy).__name__ + dt_string + '.csv')
 
 
 if __name__ == '__main__':
-    main()
+    start_time = time.time()
+    main(para_seed=1)
+    print('---active learning using %s seconds---' % (time.time() - start_time))
