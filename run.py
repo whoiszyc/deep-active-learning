@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import time
+import logging
+import sys
 from dataset import get_dataset, get_handler
 from model import get_net
 from torchvision import transforms
@@ -18,6 +20,7 @@ def main(para_seed=1):
     NUM_QUERY = 10000
     NUM_ROUND = 10
     BINARY_LABEL = 0
+    LEARNING_RATE = 1e-3
 
     DATA_NAME = 'psse'
     # DATA_NAME = 'MNIST'
@@ -49,7 +52,7 @@ def main(para_seed=1):
                      {'n_epoch': 20, 'transform': None,
                       'loader_tr_args': {'batch_size': 64, 'num_workers': 1},
                       'loader_te_args': {'batch_size': 1000, 'num_workers': 1},
-                      'optimizer_args': {'lr': 1e-3, 'momentum': 0.3}}
+                      'optimizer_args': {'lr': LEARNING_RATE, 'momentum': 0.3}}
                 }
     args = args_pool[DATA_NAME]
 
@@ -101,19 +104,26 @@ def main(para_seed=1):
     #              KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)]
     # strategy = ActiveLearningByLearning(X_tr, Y_tr, idxs_lb, net, handler, args, strategy_list=albl_list, delta=0.1)
 
-    # print info
-    print(DATA_NAME)
-    print('SEED {}'.format(SEED))
-    print(type(strategy).__name__)
-
-    # # try to use untrained network to see the base accuracy
-    # P = strategy.predict_binary(X_te, Y_te, flag=1)
-    # Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-    # acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-    # print('Base accuracy {}'.format(acc))
+    # create logging file
+    now = datetime.now()
+    dt_string = now.strftime("__%Y_%m_%d_%H_%M")
+    FILENAME_CSV = 'acc_SEED_{}__'.format(SEED) + type(strategy).__name__ + dt_string + '.csv'
+    FILENAME_LOG = 'acc_SEED_{}__'.format(SEED) + type(strategy).__name__ + dt_string + '.log'
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %I:%M:%S %p',
+                        filename=FILENAME_LOG, level=logging.DEBUG)
+    logging.info('DATA NAME: ' + DATA_NAME)
+    logging.info('STRATEGY: ' + type(strategy).__name__)
+    logging.info('SEED: {}'.format(SEED))
+    logging.info('NUM_INIT_LB: {}'.format(NUM_INIT_LB))
+    logging.info('NUM_QUERY: {}'.format(NUM_QUERY))
+    logging.info('NUM_ROUND: {}'.format(NUM_ROUND))
+    logging.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
 
     # record accuracy
     acc = np.zeros(NUM_ROUND + 1)
+
+    # record starting time
+    start_time = time.time()
 
     # round 0 accuracy
     strategy.train(flag_binary=BINARY_LABEL)
@@ -121,16 +131,18 @@ def main(para_seed=1):
     if BINARY_LABEL == 0:
         P = strategy.predict(X_te, Y_te)
         acc[0] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-        print('Round 0\ntesting accuracy {}'.format(acc[0]))
-    elif BINARY_LABEL == 0:
+        print('Round 0 testing accuracy {}'.format(acc[0]))
+        logging.info('Round 0 testing accuracy {}'.format(acc[0]))
+    elif BINARY_LABEL == 1:
         P = strategy.predict_binary(X_te, Y_te)
         Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
         acc[0] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-        print('Round 0\ntesting accuracy {}'.format(acc[0]))
+        print('Round 0 testing accuracy {}'.format(acc[0]))
 
 
     for rd in range(1, NUM_ROUND+1):
         print('Round {}'.format(rd))
+        logging.info('Round {}'.format(rd))
 
         # query
         q_idxs = strategy.query(NUM_QUERY)
@@ -144,24 +156,20 @@ def main(para_seed=1):
             P = strategy.predict(X_te, Y_te)
             acc[rd] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
             print('testing accuracy {}'.format(acc[rd]))
-        elif BINARY_LABEL == 0:
+            logging.info('testing accuracy {}'.format(acc[rd]))
+        elif BINARY_LABEL == 1:
             P = strategy.predict_binary(X_te, Y_te)
             Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
             acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
             print('testing accuracy {}'.format(acc[rd]))
 
-    # print results
-    print('SEED {}'.format(SEED))
-    print(type(strategy).__name__)
-    print(acc)
-
-    now = datetime.now()
-    dt_string = now.strftime("__%Y_%m_%d_%H_%M")
+    logging.info('learning complete using %s seconds---' % (time.time() - start_time))
+    logging.info('write results into csv')
     acc_pd = pd.DataFrame(acc)
-    acc_pd.to_csv('acc_SEED_{}__'.format(SEED) + type(strategy).__name__ + dt_string + '.csv')
+    acc_pd.to_csv(FILENAME_CSV)
 
+    # close log
+    logging.shutdown()
 
 if __name__ == '__main__':
-    start_time = time.time()
     main(para_seed=1)
-    print('---active learning using %s seconds---' % (time.time() - start_time))

@@ -3,6 +3,7 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
+import logging
 
 class Strategy:
     def __init__(self, X, Y, idxs_lb, net, handler, args):
@@ -55,6 +56,7 @@ class Strategy:
         loader_tr = DataLoader(self.handler(self.X[idxs_train], self.Y[idxs_train], transform=self.args['transform']),
                             shuffle=True, **self.args['loader_tr_args'])
         print('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
+        logging.info('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
 
         if flag_binary == 0:
             print("Train multi-label task using cross-entropy")
