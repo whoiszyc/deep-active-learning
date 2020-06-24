@@ -18,7 +18,7 @@ def main(para_seed=1):
 
     NUM_INIT_LB = 50000
     NUM_QUERY = 10000
-    NUM_ROUND = 10
+    NUM_ROUND = 20
     BINARY_LABEL = 0
     LEARNING_RATE = 1e-3
 
@@ -87,8 +87,8 @@ def main(para_seed=1):
     net = get_net(DATA_NAME)
     handler = get_handler(DATA_NAME)
 
-    strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
+    # strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
@@ -124,6 +124,12 @@ def main(para_seed=1):
 
     # record starting time
     start_time = time.time()
+
+    # predict with untrained model
+    P = strategy.predict(X_te, Y_te, flag=1)
+    acc_init = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+    print('Initial testing accuracy {}'.format(acc_init))
+    logging.info('Initial testing accuracy {}'.format(acc_init))
 
     # round 0 accuracy
     strategy.train(flag_binary=BINARY_LABEL)
@@ -163,7 +169,7 @@ def main(para_seed=1):
             acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
             print('testing accuracy {}'.format(acc[rd]))
 
-    logging.info('learning complete using %s seconds---' % (time.time() - start_time))
+    logging.info('learning complete using %s seconds' % (time.time() - start_time))
     logging.info('write results into csv')
     acc_pd = pd.DataFrame(acc)
     acc_pd.to_csv(FILENAME_CSV)

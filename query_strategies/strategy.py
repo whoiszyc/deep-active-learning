@@ -27,7 +27,7 @@ class Strategy:
         self.clf.train()
         loss_func = torch.nn.BCELoss()  # ZYC
         for batch_idx, (x, y, idxs) in enumerate(loader_tr):
-            # x, y = x.to(self.device), y.to(self.device)
+            x, y = x.to(self.device), y.to(self.device)
             optimizer.zero_grad()
             out, e1 = self.clf(x)
             # loss = F.cross_entropy(out, y) # out.type()=float and y.type()=long
@@ -39,7 +39,7 @@ class Strategy:
     def _train(self, epoch, loader_tr, optimizer):
         self.clf.train()
         for batch_idx, (x, y, idxs) in enumerate(loader_tr):
-            # x, y = x.to(self.device), y.to(self.device)
+            x, y = x.to(self.device), y.to(self.device)
             optimizer.zero_grad()
             out, e1 = self.clf(x)
             loss = F.cross_entropy(out, y) # out.type()=float and y.type()=long
@@ -74,13 +74,14 @@ class Strategy:
         # for base prediction
         if flag == 1:
             print("Predict using untrained model")
+            logging.info("Predict using untrained model")
             self.clf = self.net().to(self.device)
         else:
             print("Predict using trained model")
 
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
-        # self.clf.eval()
+        self.clf.eval()
         P = torch.zeros(len(Y), dtype=Y.dtype)
         with torch.no_grad():
             for x, y, idxs in loader_te:
