@@ -38,3 +38,21 @@
 2020-06-24 11:48:02 AM - INFO - testing accuracy 0.8932269281862937
 2020-06-24 11:48:02 AM - INFO - Round 10
 2020-06-24 11:48:10 AM - INFO - Now train with 110000 samples
+2020-06-24 11:52:46 AM - INFO - testing accuracy 0.89371532390404
+2020-06-24 11:52:46 AM - INFO - Round 11
+2020-06-24 11:52:54 AM - INFO - Now train with 120000 samples
+2020-06-24 11:58:11 AM - INFO - testing accuracy 0.92311674611237
+2020-06-24 11:58:11 AM - INFO - Round 12
+2020-06-24 11:58:18 AM - INFO - Now train with 130000 samples
+2020-06-24 12:03:49 PM - INFO - testing accuracy 0.9208896616394467
+2020-06-24 12:03:49 PM - INFO - Round 13
+2020-06-24 12:03:55 PM - INFO - Now train with 140000 samples
+2020-06-24 12:09:58 PM - INFO - testing accuracy 0.886487067281394
+2020-06-24 12:09:58 PM - INFO - Round 14
+2020-06-24 12:10:04 PM - INFO - Now train with 150000 samples
+2020-06-24 12:16:28 PM - INFO - testing accuracy 0.8885969367820583
+2020-06-24 12:16:28 PM - INFO - Round 15
+2020-06-24 12:16:33 PM - INFO - Now train with 160000 samples
+2020-06-24 12:23:34 PM - INFO - testing accuracy 0.9106235836524186
+2020-06-24 12:23:34 PM - INFO - Round 16
+2020-06-24 12:23:41 PM - INFO - Now train with 170000 samples
