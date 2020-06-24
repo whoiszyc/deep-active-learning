@@ -120,7 +120,7 @@ def main(para_seed=1):
     logging.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
 
     # record accuracy
-    acc = np.zeros(NUM_ROUND + 1)
+    acc_list = []
 
     # record starting time
     start_time = time.time()
@@ -130,20 +130,23 @@ def main(para_seed=1):
     acc_init = 1.0 * (Y_te == P).sum().item() / len(Y_te)
     print('Initial testing accuracy {}'.format(acc_init))
     logging.info('Initial testing accuracy {}'.format(acc_init))
+    acc_list.append(acc_init)
 
     # round 0 accuracy
     strategy.train(flag_binary=BINARY_LABEL)
 
     if BINARY_LABEL == 0:
         P = strategy.predict(X_te, Y_te)
-        acc[0] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-        print('Round 0 testing accuracy {}'.format(acc[0]))
-        logging.info('Round 0 testing accuracy {}'.format(acc[0]))
+        acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+        print('Round 0 testing accuracy {}'.format(acc))
+        logging.info('Round 0 testing accuracy {}'.format(acc))
     elif BINARY_LABEL == 1:
         P = strategy.predict_binary(X_te, Y_te)
         Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-        acc[0] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-        print('Round 0 testing accuracy {}'.format(acc[0]))
+        acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
+        print('Round 0 testing accuracy {}'.format(acc))
+    # record acc to list
+    acc_list.append(acc_init)
 
 
     for rd in range(1, NUM_ROUND+1):
@@ -160,18 +163,20 @@ def main(para_seed=1):
 
         if BINARY_LABEL == 0:
             P = strategy.predict(X_te, Y_te)
-            acc[rd] = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-            print('testing accuracy {}'.format(acc[rd]))
-            logging.info('testing accuracy {}'.format(acc[rd]))
+            acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+            print('testing accuracy {}'.format(acc))
+            logging.info('testing accuracy {}'.format(acc))
         elif BINARY_LABEL == 1:
             P = strategy.predict_binary(X_te, Y_te)
             Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-            acc[rd] = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-            print('testing accuracy {}'.format(acc[rd]))
+            acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
+            print('testing accuracy {}'.format(acc))
+        # record acc to list
+        acc_list.append(acc_init)
 
     logging.info('learning complete using %s seconds' % (time.time() - start_time))
     logging.info('write results into csv')
-    acc_pd = pd.DataFrame(acc)
+    acc_pd = pd.DataFrame(acc_list)
     acc_pd.to_csv(FILENAME_CSV)
 
     # close log
