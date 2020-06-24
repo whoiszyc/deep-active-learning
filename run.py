@@ -87,10 +87,10 @@ def main(para_seed=1):
     net = get_net(DATA_NAME)
     handler = get_handler(DATA_NAME)
 
-    # strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
@@ -107,8 +107,8 @@ def main(para_seed=1):
     # create logging file
     now = datetime.now()
     dt_string = now.strftime("__%Y_%m_%d_%H_%M")
-    FILENAME_CSV = 'acc_SEED_{}__'.format(SEED) + type(strategy).__name__ + dt_string + '.csv'
-    FILENAME_LOG = 'acc_SEED_{}__'.format(SEED) + type(strategy).__name__ + dt_string + '.log'
+    FILENAME_CSV = type(strategy).__name__ + dt_string + '.csv'
+    FILENAME_LOG = type(strategy).__name__ + dt_string + '.log'
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %I:%M:%S %p',
                         filename=FILENAME_LOG, level=logging.DEBUG)
     logging.info('DATA NAME: ' + DATA_NAME)
