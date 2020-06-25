@@ -20,8 +20,7 @@ def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
     """
     logger = logging.getLogger(logger_name)
     logger.setLevel(level)
-    format_string = ("%(asctime)s — %(levelname)s — %(funcName)s (%(lineno)d):"
-                    "%(message)s")
+    format_string = ("%(asctime)s — %(levelname)s — %(funcName)s (%(lineno)d):  %(message)s")
     datefmt = '%Y-%m-%d %I:%M:%S %p'
     log_format = logging.Formatter(format_string, datefmt)
 
@@ -194,7 +193,7 @@ def main(para_seed=1, method=None):
         logger.info('Round {}'.format(rd))
 
         # query
-        q_idxs = strategy.query(NUM_QUERY)
+        q_idxs = strategy.query(NUM_QUERY, logger)
         idxs_lb[q_idxs] = True
 
         # update

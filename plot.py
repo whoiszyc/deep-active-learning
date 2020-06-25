@@ -1,3 +1,8 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+
 Entropy = [0.6362624052512308, 0.8424337735406736, 0.8604751113542236, 0.8589317808861452, 0.8729194342424006,
            0.8595178557474408, 0.9223060092209111, 0.8798448855200438, 0.8789853090568102, 0.8914980073454716,
            0.8932269281862937, 0.89371532390404, 0.92311674611237, 0.9208896616394467, 0.886487067281394,
@@ -15,3 +20,20 @@ Random = [0.6362624052512308, 0.7858775494256466, 0.8627901070563413, 0.85735914
           0.8401773853246854, 0.8451590216456982, 0.8678987262639681, 0.8651832460732984, 0.8918008126904743,
           0.8816128780182856, 0.8391810580604829, 0.8940962725638821, 0.8529733531296397, 0.920987340782996,
           0.882218488708291, 0.8821012737360319]
+
+
+Iteration_step = range(len(Random))
+
+plt.plot(Iteration_step, Random, label='Random Sampling', color='red', alpha=1)
+plt.plot(Iteration_step, BALD, label='Bayesian Sampling', color='blue', alpha=1)
+plt.plot(Iteration_step, Entropy, label='Uncertainty-Entropy Sampling', color='green', alpha=1)
+plt.xlabel('Iteration Steps')
+plt.ylabel('Prediction Accuracy')
+plt.legend(title='Query Method:')
+plt.grid(color='0.8')
+plt.title('Active Learning for Power Flow Solvability - IEEE 39-bus System')
+plt.show()
+
+
+
+

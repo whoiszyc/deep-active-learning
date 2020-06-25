@@ -14,10 +14,11 @@ class Strategy:
         self.handler = handler
         self.args = args
         self.n_pool = len(Y)
+        self.n_label = len(np.unique(Y))
         use_cuda = torch.cuda.is_available()
         self.device = torch.device("cuda" if use_cuda else "cpu")
 
-    def query(self, n):
+    def query(self, n, logger):
         pass
 
     def update(self, idxs_lb):
@@ -90,18 +91,24 @@ class Strategy:
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
 
-        # self.clf.eval()
-        probs = torch.zeros([len(Y), len(np.unique(Y))])
-        logger.debug("shape of probs is {}".format(probs.shape))
+        self.clf.eval()
+        # here we change second tensor dim from len(np.unique(Y)) to self.n_label to fix bug (due to data imbalance)
+        # But we are not sure if it is the requirement of the algorithm to define dim based on current feasture
+        # Same for the following code
+        probs = torch.zeros([len(Y), self.n_label])
+        # logger.debug("shape of probs is {}".format(probs.shape))
         n = 0
         with torch.no_grad():
             for x, y, idxs in loader_te:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
-                prob = F.softmax(out, dim=1)   # perform softmax operation along dimension 1 (label dimension)
+                # perform softmax operation along dimension 1 (label dimension)
+                prob = F.softmax(out, dim=1)
+                # # debug code
+                # n = n + 1
+                # logger.debug("at iter {} shape of prob is {}".format(n, prob.shape))
+                # logger.debug("at iter {} shape of idxs is {}".format(n, idxs.shape))
                 probs[idxs] = prob.cpu()
-                n = n + 1
-                logger.debug("at iter {} shape of prob is {}".format(n, probs.shape))
         return probs
 
 
@@ -110,7 +117,7 @@ class Strategy:
                             shuffle=False, **self.args['loader_te_args'])
 
         self.clf.train()
-        probs = torch.zeros([len(Y), len(np.unique(Y))])
+        probs = torch.zeros([len(Y), self.n_label])
         for i in range(n_drop):
             print('n_drop {}/{}'.format(i+1, n_drop))
             with torch.no_grad():
@@ -129,7 +136,7 @@ class Strategy:
                             shuffle=False, **self.args['loader_te_args'])
 
         self.clf.train()
-        probs = torch.zeros([n_drop, len(Y), len(np.unique(Y))])
+        probs = torch.zeros([n_drop, len(Y), self.n_label])
         for i in range(n_drop):
             print('n_drop {}/{}'.format(i+1, n_drop))
             with torch.no_grad():
