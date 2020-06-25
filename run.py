@@ -134,7 +134,7 @@ def main(para_seed=1):
     # round 0 accuracy
     strategy.train()
 
-
+    # testing
     P = strategy.predict(X_te, Y_te)
     acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
     print('Round 0 testing accuracy {}'.format(acc))
