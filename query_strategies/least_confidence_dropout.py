@@ -7,7 +7,7 @@ class LeastConfidenceDropout(Strategy):
 		super(LeastConfidenceDropout, self).__init__(X, Y, idxs_lb, net, handler, args)
 		self.n_drop = n_drop
 
-	def query(self, n):
+	def query(self, n, logger):
 		idxs_unlabeled = np.arange(self.n_pool)[~self.idxs_lb]
 		probs = self.predict_prob_dropout(self.X[idxs_unlabeled], self.Y[idxs_unlabeled], self.n_drop)
 		U = probs.max(1)[0]

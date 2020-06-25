@@ -47,6 +47,7 @@ def main(para_seed=1, method=None):
     NUM_ROUND = 20
     LEARNING_RATE = 1e-3
     BATCH_SIZE = 64
+    N_EPOCH = 20
 
     DATA_NAME = 'psse'
     # DATA_NAME = 'MNIST'
@@ -75,7 +76,7 @@ def main(para_seed=1, method=None):
                      'loader_te_args':{'batch_size': 1000, 'num_workers': 1},
                      'optimizer_args':{'lr': 0.05, 'momentum': 0.3}},
                  'psse':
-                     {'n_epoch': 20, 'transform': None,
+                     {'n_epoch': N_EPOCH, 'transform': None,
                       'loader_tr_args': {'batch_size': BATCH_SIZE, 'num_workers': 1},
                       'loader_te_args': {'batch_size': 1000, 'num_workers': 1},
                       'optimizer_args': {'lr': LEARNING_RATE, 'momentum': 0.3}}
@@ -162,6 +163,7 @@ def main(para_seed=1, method=None):
     logger.info('NUM_ROUND: {}'.format(NUM_ROUND))
     logger.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
     logger.info('BATCH_SIZE: {}'.format(BATCH_SIZE))
+    logger.info('N_EPOCH: {}'.format(N_EPOCH))
 
     # record accuracy
     acc_list = []
@@ -220,4 +222,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main(para_seed=1, method="LeastConfidence")
+    main(para_seed=1, method="MarginSampling")

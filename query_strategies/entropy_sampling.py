@@ -6,7 +6,7 @@ class EntropySampling(Strategy):
 	def __init__(self, X, Y, idxs_lb, net, handler, args):
 		super(EntropySampling, self).__init__(X, Y, idxs_lb, net, handler, args)
 
-	def query(self, n):
+	def query(self, n, logger):
 		idxs_unlabeled = np.arange(self.n_pool)[~self.idxs_lb]
 		probs = self.predict_prob(self.X[idxs_unlabeled], self.Y[idxs_unlabeled])
 		log_probs = torch.log(probs)

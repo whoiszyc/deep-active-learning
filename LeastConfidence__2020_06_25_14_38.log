@@ -1,0 +1,74 @@
+2020-06-25 02:38:40 PM — INFO — main (157):  DATA NAME: psse
+2020-06-25 02:38:40 PM — INFO — main (158):  STRATEGY: LeastConfidence
+2020-06-25 02:38:40 PM — INFO — main (159):  SEED: 1
+2020-06-25 02:38:40 PM — INFO — main (160):  NUM_INIT_LB: 10000
+2020-06-25 02:38:40 PM — INFO — main (161):  NUM_QUERY: 10000
+2020-06-25 02:38:40 PM — INFO — main (162):  NUM_ROUND: 20
+2020-06-25 02:38:40 PM — INFO — main (163):  LEARNING_RATE: 0.001
+2020-06-25 02:38:40 PM — INFO — main (164):  BATCH_SIZE: 64
+2020-06-25 02:38:40 PM — INFO — predict (71):  Predict using untrained model
+2020-06-25 02:38:43 PM — INFO — main (176):  Initial testing accuracy 0.6362624052512308
+2020-06-25 02:38:43 PM — INFO — train (61):  Now train with 10000 samples
+2020-06-25 02:39:00 PM — INFO — main (186):  Round 0 testing accuracy 0.7858775494256466
+2020-06-25 02:39:00 PM — INFO — main (193):  Round 1
+2020-06-25 02:39:07 PM — INFO — train (61):  Now train with 20000 samples
+2020-06-25 02:39:36 PM — INFO — main (207):  testing accuracy 0.8654860514183011
+2020-06-25 02:39:36 PM — INFO — main (193):  Round 2
+2020-06-25 02:39:43 PM — INFO — train (61):  Now train with 30000 samples
+2020-06-25 02:40:31 PM — INFO — main (207):  testing accuracy 0.8775884973040556
+2020-06-25 02:40:31 PM — INFO — main (193):  Round 3
+2020-06-25 02:40:37 PM — INFO — train (61):  Now train with 40000 samples
+2020-06-25 02:41:40 PM — INFO — main (207):  testing accuracy 0.8454129874189263
+2020-06-25 02:41:40 PM — INFO — main (193):  Round 4
+2020-06-25 02:41:47 PM — INFO — train (61):  Now train with 50000 samples
+2020-06-25 02:43:07 PM — INFO — main (207):  testing accuracy 0.8840060170352426
+2020-06-25 02:43:08 PM — INFO — main (193):  Round 5
+2020-06-25 02:43:14 PM — INFO — train (61):  Now train with 60000 samples
+2020-06-25 02:44:58 PM — INFO — main (207):  testing accuracy 0.8972903805579433
+2020-06-25 02:44:58 PM — INFO — main (193):  Round 6
+2020-06-25 02:45:04 PM — INFO — train (61):  Now train with 70000 samples
+2020-06-25 02:47:08 PM — INFO — main (207):  testing accuracy 0.8894174415878722
+2020-06-25 02:47:08 PM — INFO — main (193):  Round 7
+2020-06-25 02:47:13 PM — INFO — train (61):  Now train with 80000 samples
+2020-06-25 02:49:41 PM — INFO — main (207):  testing accuracy 0.9057200906462453
+2020-06-25 02:49:41 PM — INFO — main (193):  Round 8
+2020-06-25 02:49:47 PM — INFO — train (61):  Now train with 90000 samples
+2020-06-25 02:52:37 PM — INFO — main (207):  testing accuracy 0.90239899976557
+2020-06-25 02:52:37 PM — INFO — main (193):  Round 9
+2020-06-25 02:52:43 PM — INFO — train (61):  Now train with 100000 samples
+2020-06-25 02:55:52 PM — INFO — main (207):  testing accuracy 0.8867019613972025
+2020-06-25 02:55:52 PM — INFO — main (193):  Round 10
+2020-06-25 02:55:57 PM — INFO — train (61):  Now train with 110000 samples
+2020-06-25 02:59:25 PM — INFO — main (207):  testing accuracy 0.8802453700085958
+2020-06-25 02:59:25 PM — INFO — main (193):  Round 11
+2020-06-25 02:59:31 PM — INFO — train (61):  Now train with 120000 samples
+2020-06-25 03:03:28 PM — INFO — main (207):  testing accuracy 0.8738864577635383
+2020-06-25 03:03:28 PM — INFO — main (193):  Round 12
+2020-06-25 03:03:33 PM — INFO — train (61):  Now train with 130000 samples
+2020-06-25 03:08:17 PM — INFO — main (207):  testing accuracy 0.9175392670157068
+2020-06-25 03:08:17 PM — INFO — main (193):  Round 13
+2020-06-25 03:08:23 PM — INFO — train (61):  Now train with 140000 samples
+2020-06-25 03:13:34 PM — INFO — main (207):  testing accuracy 0.9108091740251621
+2020-06-25 03:13:34 PM — INFO — main (193):  Round 14
+2020-06-25 03:13:39 PM — INFO — train (61):  Now train with 150000 samples
+2020-06-25 03:18:58 PM — INFO — main (207):  testing accuracy 0.9080741580057826
+2020-06-25 03:18:58 PM — INFO — main (193):  Round 15
+2020-06-25 03:19:04 PM — INFO — train (61):  Now train with 160000 samples
+2020-06-25 03:24:31 PM — INFO — main (207):  testing accuracy 0.9393217160271938
+2020-06-25 03:24:31 PM — INFO — main (193):  Round 16
+2020-06-25 03:24:36 PM — INFO — train (61):  Now train with 170000 samples
+2020-06-25 03:31:11 PM — INFO — main (207):  testing accuracy 0.8948093303117918
+2020-06-25 03:31:11 PM — INFO — main (193):  Round 17
+2020-06-25 03:31:16 PM — INFO — train (61):  Now train with 180000 samples
+2020-06-25 03:37:23 PM — INFO — main (207):  testing accuracy 0.8691783230444635
+2020-06-25 03:37:23 PM — INFO — main (193):  Round 18
+2020-06-25 03:37:27 PM — INFO — train (61):  Now train with 190000 samples
+2020-06-25 03:43:55 PM — INFO — main (207):  testing accuracy 0.8943111666796906
+2020-06-25 03:43:55 PM — INFO — main (193):  Round 19
+2020-06-25 03:43:59 PM — INFO — train (61):  Now train with 200000 samples
+2020-06-25 03:51:02 PM — INFO — main (207):  testing accuracy 0.8840157849495975
+2020-06-25 03:51:02 PM — INFO — main (193):  Round 20
+2020-06-25 03:51:06 PM — INFO — train (61):  Now train with 210000 samples
+2020-06-25 03:58:25 PM — INFO — main (207):  testing accuracy 0.8872489646010784
+2020-06-25 03:58:25 PM — INFO — main (212):  learning complete using 4785.169898033142 seconds
+2020-06-25 03:58:25 PM — INFO — main (213):  write accuracy records into csv
