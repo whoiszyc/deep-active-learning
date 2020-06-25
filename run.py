@@ -16,10 +16,9 @@ def main(para_seed=1):
     # parameters
     SEED = para_seed
 
-    NUM_INIT_LB = 10000
+    NUM_INIT_LB = 190000
     NUM_QUERY = 10000
     NUM_ROUND = 20
-    BINARY_LABEL = 0
     LEARNING_RATE = 1e-3
 
     DATA_NAME = 'psse'
@@ -89,8 +88,8 @@ def main(para_seed=1):
 
     # strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
-    # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
@@ -133,20 +132,15 @@ def main(para_seed=1):
     acc_list.append(acc_init)
 
     # round 0 accuracy
-    strategy.train(flag_binary=BINARY_LABEL)
+    strategy.train()
 
-    if BINARY_LABEL == 0:
-        P = strategy.predict(X_te, Y_te)
-        acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-        print('Round 0 testing accuracy {}'.format(acc))
-        logging.info('Round 0 testing accuracy {}'.format(acc))
-    elif BINARY_LABEL == 1:
-        P = strategy.predict_binary(X_te, Y_te)
-        Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-        acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-        print('Round 0 testing accuracy {}'.format(acc))
+
+    P = strategy.predict(X_te, Y_te)
+    acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+    print('Round 0 testing accuracy {}'.format(acc))
+    logging.info('Round 0 testing accuracy {}'.format(acc))
     # record acc to list
-    acc_list.append(acc_init)
+    acc_list.append(acc)
 
 
     for rd in range(1, NUM_ROUND+1):
@@ -159,23 +153,19 @@ def main(para_seed=1):
 
         # update
         strategy.update(idxs_lb)
-        strategy.train(flag_binary=BINARY_LABEL)
+        strategy.train()
 
-        if BINARY_LABEL == 0:
-            P = strategy.predict(X_te, Y_te)
-            acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
-            print('testing accuracy {}'.format(acc))
-            logging.info('testing accuracy {}'.format(acc))
-        elif BINARY_LABEL == 1:
-            P = strategy.predict_binary(X_te, Y_te)
-            Y_te_tranpose = torch.transpose(Y_te, 0, 1)  # ZYC
-            acc = 1.0 * (Y_te_tranpose == P).sum().item() / len(Y_te)  # ZYC
-            print('testing accuracy {}'.format(acc))
+        # testing
+        P = strategy.predict(X_te, Y_te)
+        acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+        print('testing accuracy {}'.format(acc))
+        logging.info('testing accuracy {}'.format(acc))
+
         # record acc to list
-        acc_list.append(acc_init)
+        acc_list.append(acc)
 
     logging.info('learning complete using %s seconds' % (time.time() - start_time))
-    logging.info('write results into csv')
+    logging.info('write accuracy records into csv')
     acc_pd = pd.DataFrame(acc_list)
     acc_pd.to_csv(FILENAME_CSV)
 
