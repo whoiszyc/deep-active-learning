@@ -13,6 +13,29 @@ from query_strategies import RandomSampling, LeastConfidence, MarginSampling, En
                                 KMeansSampling, KCenterGreedy, BALDDropout, CoreSet, \
                                 AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning
 
+def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
+    """
+    Method to return a custom logger with the given name and level
+    """
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(level)
+    format_string = ("%(asctime)s — %(name)s — %(levelname)s — %(funcName)s (%(lineno)d):"
+                    "%(message)s")
+    log_format = logging.Formatter(format_string)
+
+    # Creating and adding the file handler
+    file_handler = logging.FileHandler(logger_name, mode='a')
+    file_handler.setFormatter(log_format)
+    logger.addHandler(file_handler)
+
+    if verbose == 1:
+        # Creating and adding the console handler
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setFormatter(log_format)
+        logger.addHandler(console_handler)
+    return logger
+
+
 def main(para_seed=1, method=None):
     # parameters
     SEED = para_seed
@@ -124,16 +147,19 @@ def main(para_seed=1, method=None):
     dt_string = now.strftime("__%Y_%m_%d_%H_%M")
     FILENAME_CSV = type(strategy).__name__ + dt_string + '.csv'
     FILENAME_LOG = type(strategy).__name__ + dt_string + '.log'
-    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %I:%M:%S %p',
-                        filename=FILENAME_LOG, level=logging.DEBUG)
-    logging.info('DATA NAME: ' + DATA_NAME)
-    logging.info('STRATEGY: ' + type(strategy).__name__)
-    logging.info('SEED: {}'.format(SEED))
-    logging.info('NUM_INIT_LB: {}'.format(NUM_INIT_LB))
-    logging.info('NUM_QUERY: {}'.format(NUM_QUERY))
-    logging.info('NUM_ROUND: {}'.format(NUM_ROUND))
-    logging.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
-    logging.info('BATCH_SIZE: {}'.format(BATCH_SIZE))
+
+    # in order to create a new log file at each iteration, we need to create an object
+    logger = logger_obj(logger_name=FILENAME_LOG, level=logging.DEBUG)
+    # logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %I:%M:%S %p',
+    #                     filename=FILENAME_LOG, level=logging.DEBUG)
+    logger.info('DATA NAME: ' + DATA_NAME)
+    logger.info('STRATEGY: ' + type(strategy).__name__)
+    logger.info('SEED: {}'.format(SEED))
+    logger.info('NUM_INIT_LB: {}'.format(NUM_INIT_LB))
+    logger.info('NUM_QUERY: {}'.format(NUM_QUERY))
+    logger.info('NUM_ROUND: {}'.format(NUM_ROUND))
+    logger.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
+    logger.info('BATCH_SIZE: {}'.format(BATCH_SIZE))
 
     # record accuracy
     acc_list = []
@@ -142,27 +168,27 @@ def main(para_seed=1, method=None):
     start_time = time.time()
 
     # predict with untrained model
-    P = strategy.predict(X_te, Y_te, flag=1)
+    P = strategy.predict(X_te, Y_te, logger, flag=1)
     acc_init = 1.0 * (Y_te == P).sum().item() / len(Y_te)
     print('Initial testing accuracy {}'.format(acc_init))
-    logging.info('Initial testing accuracy {}'.format(acc_init))
+    logger.info('Initial testing accuracy {}'.format(acc_init))
     acc_list.append(acc_init)
 
     # round 0 accuracy
-    strategy.train()
+    strategy.train(logger)
 
     # testing
-    P = strategy.predict(X_te, Y_te)
+    P = strategy.predict(X_te, Y_te, logger)
     acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
     print('Round 0 testing accuracy {}'.format(acc))
-    logging.info('Round 0 testing accuracy {}'.format(acc))
+    logger.info('Round 0 testing accuracy {}'.format(acc))
     # record acc to list
     acc_list.append(acc)
 
 
     for rd in range(1, NUM_ROUND+1):
         print('Round {}'.format(rd))
-        logging.info('Round {}'.format(rd))
+        logger.info('Round {}'.format(rd))
 
         # query
         q_idxs = strategy.query(NUM_QUERY)
@@ -170,24 +196,26 @@ def main(para_seed=1, method=None):
 
         # update
         strategy.update(idxs_lb)
-        strategy.train()
+        strategy.train(logger)
 
         # testing
-        P = strategy.predict(X_te, Y_te)
+        P = strategy.predict(X_te, Y_te, logger)
         acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
         print('testing accuracy {}'.format(acc))
-        logging.info('testing accuracy {}'.format(acc))
+        logger.info('testing accuracy {}'.format(acc))
 
         # record acc to list
         acc_list.append(acc)
 
-    logging.info('learning complete using %s seconds' % (time.time() - start_time))
-    logging.info('write accuracy records into csv')
+    logger.info('learning complete using %s seconds' % (time.time() - start_time))
+    logger.info('write accuracy records into csv')
     acc_pd = pd.DataFrame(acc_list)
     acc_pd.to_csv(FILENAME_CSV)
 
-    # close log
-    logging.shutdown()
 
 if __name__ == '__main__':
-    main(para_seed=1, method='MarginSampling')
+    # method_list = ["RandomSampling", "LeastConfidence", 'MarginSampling']
+    # for method in method_list:
+    #     main(para_seed=1, method=method)
+
+    main(para_seed=1, method="LeastConfidence")

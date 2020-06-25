@@ -48,7 +48,7 @@ class Strategy:
         if epoch % 5 == 0:
             print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
 
-    def train(self):
+    def train(self, logger):
         n_epoch = self.args['n_epoch']
         self.clf = self.net().to(self.device)
         # optimizer = optim.SGD(self.clf.parameters(), **self.args['optimizer_args'])
@@ -57,17 +57,17 @@ class Strategy:
         loader_tr = DataLoader(self.handler(self.X[idxs_train], self.Y[idxs_train], transform=self.args['transform']),
                             shuffle=True, **self.args['loader_tr_args'])
         print('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
-        logging.info('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
+        logger.info('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
 
         for epoch in range(1, n_epoch+1):
             self._train(epoch, loader_tr, optimizer)
 
 
-    def predict(self, X, Y, flag=0):
+    def predict(self, X, Y, logger, flag=0):
         # for base prediction
         if flag == 1:
             print("Predict using untrained model")
-            logging.info("Predict using untrained model")
+            logger.info("Predict using untrained model")
             self.clf = self.net().to(self.device)
         else:
             print("Predict using trained model")
