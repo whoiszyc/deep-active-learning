@@ -86,18 +86,22 @@ class Strategy:
         return P
 
 
-    def predict_prob(self, X, Y):
+    def predict_prob(self, X, Y, logger):
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
 
         # self.clf.eval()
         probs = torch.zeros([len(Y), len(np.unique(Y))])
+        logger.debug("shape of probs is {}".format(probs.shape))
+        n = 0
         with torch.no_grad():
             for x, y, idxs in loader_te:
                 x, y = x.to(self.device), y.to(self.device)
                 out, e1 = self.clf(x)
                 prob = F.softmax(out, dim=1)   # perform softmax operation along dimension 1 (label dimension)
                 probs[idxs] = prob.cpu()
+                n = n + 1
+                logger.debug("at iter {} shape of prob is {}".format(n, probs.shape))
         return probs
 
 

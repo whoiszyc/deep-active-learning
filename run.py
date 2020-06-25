@@ -13,15 +13,17 @@ from query_strategies import RandomSampling, LeastConfidence, MarginSampling, En
                                 KMeansSampling, KCenterGreedy, BALDDropout, CoreSet, \
                                 AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning
 
+
 def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
     """
     Method to return a custom logger with the given name and level
     """
     logger = logging.getLogger(logger_name)
     logger.setLevel(level)
-    format_string = ("%(asctime)s — %(name)s — %(levelname)s — %(funcName)s (%(lineno)d):"
+    format_string = ("%(asctime)s — %(levelname)s — %(funcName)s (%(lineno)d):"
                     "%(message)s")
-    log_format = logging.Formatter(format_string)
+    datefmt = '%Y-%m-%d %I:%M:%S %p'
+    log_format = logging.Formatter(format_string, datefmt)
 
     # Creating and adding the file handler
     file_handler = logging.FileHandler(logger_name, mode='a')
@@ -33,6 +35,7 @@ def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(log_format)
         logger.addHandler(console_handler)
+
     return logger
 
 
@@ -75,7 +78,7 @@ def main(para_seed=1, method=None):
                  'psse':
                      {'n_epoch': 20, 'transform': None,
                       'loader_tr_args': {'batch_size': BATCH_SIZE, 'num_workers': 1},
-                      'loader_te_args': {'batch_size': 10000, 'num_workers': 1},
+                      'loader_te_args': {'batch_size': 1000, 'num_workers': 1},
                       'optimizer_args': {'lr': LEARNING_RATE, 'momentum': 0.3}}
                 }
     args = args_pool[DATA_NAME]
@@ -210,7 +213,7 @@ def main(para_seed=1, method=None):
     logger.info('learning complete using %s seconds' % (time.time() - start_time))
     logger.info('write accuracy records into csv')
     acc_pd = pd.DataFrame(acc_list)
-    acc_pd.to_csv(FILENAME_CSV)
+    acc_pd.to_csv(FILENAME_CSV, index=False)
 
 
 if __name__ == '__main__':
