@@ -37,7 +37,7 @@ class Strategy:
             optimizer.step()
         # print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
 
-    def _train(self, epoch, loader_tr, optimizer):
+    def _train(self, epoch, loader_tr, optimizer, logger):
         self.clf.train()
         for batch_idx, (x, y, idxs) in enumerate(loader_tr):
             x, y = x.to(self.device), y.to(self.device)
@@ -48,6 +48,8 @@ class Strategy:
             optimizer.step()
         if epoch % 5 == 0:
             print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
+        elif epoch % 10 == 0:
+            logger.info("Epoch: {}; Loss: {}".format(epoch, loss.item()))
 
     def train(self, logger):
         n_epoch = self.args['n_epoch']
@@ -61,7 +63,7 @@ class Strategy:
         logger.info('Now train with {} samples'.format(len(loader_tr.dataset.Y)))
 
         for epoch in range(1, n_epoch+1):
-            self._train(epoch, loader_tr, optimizer)
+            self._train(epoch, loader_tr, optimizer, logger)
 
 
     def predict(self, X, Y, logger, flag=0):
@@ -72,6 +74,7 @@ class Strategy:
             self.clf = self.net().to(self.device)
         else:
             print("Predict using trained model")
+            logger.info("Predict using trained model")
 
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
@@ -96,7 +99,7 @@ class Strategy:
         # But we are not sure if it is the requirement of the algorithm to define dim based on current feasture
         # Same for the following code
         probs = torch.zeros([len(Y), self.n_label])
-        # logger.debug("shape of probs is {}".format(probs.shape))
+        logger.debug("shape of probs is {}".format(probs.shape))
         n = 0
         with torch.no_grad():
             for x, y, idxs in loader_te:
