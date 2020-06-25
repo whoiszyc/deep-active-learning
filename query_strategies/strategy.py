@@ -115,7 +115,7 @@ class Strategy:
         return probs
 
 
-    def predict_prob_dropout(self, X, Y, n_drop):
+    def predict_prob_dropout(self, X, Y, n_drop, logger):
         loader_te = DataLoader(self.handler(X, Y, transform=self.args['transform']),
                             shuffle=False, **self.args['loader_te_args'])
 
