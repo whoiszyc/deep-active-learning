@@ -45,7 +45,8 @@ class Strategy:
             loss = F.cross_entropy(out, y) # out.type()=float and y.type()=long
             loss.backward()
             optimizer.step()
-        # print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
+        if epoch % 5 == 0:
+            print("Epoch: {}; Loss: {}".format(epoch, loss.item()))
 
     def train(self):
         n_epoch = self.args['n_epoch']

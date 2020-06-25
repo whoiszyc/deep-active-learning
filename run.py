@@ -17,10 +17,11 @@ def main(para_seed=1, method=None):
     # parameters
     SEED = para_seed
 
-    NUM_INIT_LB = 190000
+    NUM_INIT_LB = 10000
     NUM_QUERY = 10000
     NUM_ROUND = 20
     LEARNING_RATE = 1e-3
+    BATCH_SIZE = 64
 
     DATA_NAME = 'psse'
     # DATA_NAME = 'MNIST'
@@ -45,13 +46,13 @@ def main(para_seed=1, method=None):
                      'optimizer_args':{'lr': 0.01, 'momentum': 0.5}},
                 'CIFAR10':
                     {'n_epoch': 20, 'transform': transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616))]),
-                     'loader_tr_args':{'batch_size': 64, 'num_workers': 1},
+                     'loader_tr_args':{'batch_size': BATCH_SIZE, 'num_workers': 1},
                      'loader_te_args':{'batch_size': 1000, 'num_workers': 1},
                      'optimizer_args':{'lr': 0.05, 'momentum': 0.3}},
                  'psse':
                      {'n_epoch': 20, 'transform': None,
-                      'loader_tr_args': {'batch_size': 64, 'num_workers': 1},
-                      'loader_te_args': {'batch_size': 1000, 'num_workers': 1},
+                      'loader_tr_args': {'batch_size': BATCH_SIZE, 'num_workers': 1},
+                      'loader_te_args': {'batch_size': 10000, 'num_workers': 1},
                       'optimizer_args': {'lr': LEARNING_RATE, 'momentum': 0.3}}
                 }
     args = args_pool[DATA_NAME]
@@ -132,6 +133,7 @@ def main(para_seed=1, method=None):
     logging.info('NUM_QUERY: {}'.format(NUM_QUERY))
     logging.info('NUM_ROUND: {}'.format(NUM_ROUND))
     logging.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
+    logging.info('BATCH_SIZE: {}'.format(BATCH_SIZE))
 
     # record accuracy
     acc_list = []
