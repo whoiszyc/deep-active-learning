@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-Random_1 = pd.read_csv("RandomSampling__2020_06_26_00_22.csv")
-Margin = pd.read_csv("MarginSampling__2020_06_25_21_55.csv")
-Margin_1 = pd.read_csv("MarginSampling__2020_06_26_02_19.csv")
-LeastConfidence = pd.read_csv("LeastConfidence__2020_06_25_14_38.csv")
+Random_1 = pd.read_csv("result/RandomSampling__2020_06_26_00_22.csv")
+Margin = pd.read_csv("result/MarginSampling__2020_06_25_21_55.csv")
+Margin_1 = pd.read_csv("result/MarginSampling__2020_06_26_02_19.csv")
+LeastConfidence = pd.read_csv("result/LeastConfidence__2020_06_25_14_38.csv")
 
 Entropy = [0.6362624052512308, 0.8424337735406736, 0.8604751113542236, 0.8589317808861452, 0.8729194342424006,
            0.8595178557474408, 0.9223060092209111, 0.8798448855200438, 0.8789853090568102, 0.8914980073454716,
