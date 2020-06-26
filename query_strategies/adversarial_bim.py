@@ -28,7 +28,7 @@ class AdversarialBIM(Strategy):
 
 		return (eta*eta).sum()
 
-	def query(self, n):
+	def query(self, n, logger):
 		idxs_unlabeled = np.arange(self.n_pool)[~self.idxs_lb]
 
 		self.clf.cpu()
@@ -37,7 +37,7 @@ class AdversarialBIM(Strategy):
 
 		data_pool = self.handler(self.X[idxs_unlabeled], self.Y[idxs_unlabeled], transform=self.args['transform'])
 		for i in range(len(idxs_unlabeled)):
-			if i % 100 == 0:
+			if i % 1 == 0:
 				print('adv {}/{}'.format(i, len(idxs_unlabeled)))
 			x, y, idx = data_pool[i]
 			dis[i] = self.cal_dis(x)

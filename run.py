@@ -222,4 +222,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main(para_seed=1, method="MarginSampling")
+    main(para_seed=2, method="KMeansSampling")

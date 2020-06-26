@@ -6,7 +6,7 @@ class KCenterGreedy(Strategy):
 	def __init__(self, X, Y, idxs_lb, net, handler, args):
 		super(KCenterGreedy, self).__init__(X, Y, idxs_lb, net, handler, args)
 
-	def query(self, n):
+	def query(self, n, logger):
 		lb_flag = self.idxs_lb.copy()
 		embedding = self.get_embedding(self.X, self.Y)
 		embedding = embedding.numpy()

@@ -1,0 +1,15 @@
+2020-06-26 12:20:15 AM — INFO — main (158):  DATA NAME: psse
+2020-06-26 12:20:15 AM — INFO — main (159):  STRATEGY: KMeansSampling
+2020-06-26 12:20:15 AM — INFO — main (160):  SEED: 2
+2020-06-26 12:20:15 AM — INFO — main (161):  NUM_INIT_LB: 10000
+2020-06-26 12:20:15 AM — INFO — main (162):  NUM_QUERY: 10000
+2020-06-26 12:20:15 AM — INFO — main (163):  NUM_ROUND: 20
+2020-06-26 12:20:15 AM — INFO — main (164):  LEARNING_RATE: 0.001
+2020-06-26 12:20:15 AM — INFO — main (165):  BATCH_SIZE: 64
+2020-06-26 12:20:15 AM — INFO — main (166):  N_EPOCH: 20
+2020-06-26 12:20:15 AM — INFO — predict (73):  Predict using untrained model
+2020-06-26 12:20:16 AM — INFO — main (178):  Initial testing accuracy 0.4796632023130421
+2020-06-26 12:20:16 AM — INFO — train (63):  Now train with 10000 samples
+2020-06-26 12:20:32 AM — INFO — predict (77):  Predict using trained model
+2020-06-26 12:20:33 AM — INFO — main (188):  Round 0 testing accuracy 0.8345803703993123
+2020-06-26 12:20:33 AM — INFO — main (195):  Round 1
