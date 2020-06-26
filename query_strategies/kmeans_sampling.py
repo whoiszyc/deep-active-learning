@@ -6,7 +6,7 @@ class KMeansSampling(Strategy):
 	def __init__(self, X, Y, idxs_lb, net, handler, args):
 		super(KMeansSampling, self).__init__(X, Y, idxs_lb, net, handler, args)
 
-	def query(self, n):
+	def query(self, n, logger):
 		idxs_unlabeled = np.arange(self.n_pool)[~self.idxs_lb]
 		embedding = self.get_embedding(self.X[idxs_unlabeled], self.Y[idxs_unlabeled])
 		embedding = embedding.numpy()

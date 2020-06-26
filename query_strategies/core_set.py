@@ -9,7 +9,7 @@ class CoreSet(Strategy):
 		super(CoreSet, self).__init__(X, Y, idxs_lb, net, handler, args)
 		self.tor = tor
 
-	def query(self, n):
+	def query(self, n, logger):
 		lb_flag = self.idxs_lb.copy()
 		embedding = self.get_embedding(self.X, self.Y)
 		embedding = embedding.numpy()

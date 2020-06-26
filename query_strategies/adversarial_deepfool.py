@@ -49,7 +49,7 @@ class AdversarialDeepFool(Strategy):
 
         return (eta*eta).sum()
 
-    def query(self, n):
+    def query(self, n, logger):
         idxs_unlabeled = np.arange(self.n_pool)[~self.idxs_lb]
 
         self.clf.cpu()
