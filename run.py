@@ -38,7 +38,7 @@ def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
     return logger
 
 
-def main(para_seed=1, method=None):
+def main(para_seed=1, method=None, result_dir=None):
     # parameters
     SEED = para_seed
 
@@ -148,8 +148,13 @@ def main(para_seed=1, method=None):
     # create logging file
     now = datetime.now()
     dt_string = now.strftime("__%Y_%m_%d_%H_%M")
-    FILENAME_CSV = type(strategy).__name__ + dt_string + '.csv'
-    FILENAME_LOG = type(strategy).__name__ + dt_string + '.log'
+    if result_dir != None:
+        FILENAME_CSV = result_dir + '/' + type(strategy).__name__ + dt_string + '.csv'
+        FILENAME_LOG = result_dir + '/' + type(strategy).__name__ + dt_string + '.log'
+    elif result_dir == None:
+        FILENAME_CSV = type(strategy).__name__ + dt_string + '.csv'
+        FILENAME_LOG = type(strategy).__name__ + dt_string + '.log'
+
 
     # in order to create a new log file at each iteration, we need to create an object
     logger = logger_obj(logger_name=FILENAME_LOG, level=logging.DEBUG)
@@ -222,4 +227,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main(para_seed=2, method="MarginSampling")
+    main(para_seed=2, method="MarginSampling", result_dir="result")
