@@ -2,7 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+Random_1 = pd.read_csv("RandomSampling__2020_06_26_00_22.csv")
 Margin = pd.read_csv("MarginSampling__2020_06_25_21_55.csv")
+Margin_1 = pd.read_csv("MarginSampling__2020_06_26_02_19.csv")
 LeastConfidence = pd.read_csv("LeastConfidence__2020_06_25_14_38.csv")
 
 Entropy = [0.6362624052512308, 0.8424337735406736, 0.8604751113542236, 0.8589317808861452, 0.8729194342424006,
@@ -27,10 +29,11 @@ Random = [0.6362624052512308, 0.7858775494256466, 0.8627901070563413, 0.85735914
 Iteration_step = range(len(Random))
 
 plt.plot(Iteration_step, Random, label='Random Sampling', color='black', alpha=1)
+plt.plot(Iteration_step, Random_1, label='Random Sampling', color='black', alpha=1)
 plt.plot(Iteration_step, LeastConfidence, label='Uncertainty-LeastConfidence Sampling', color='blue', alpha=1)
 plt.plot(Iteration_step, Margin, label='Uncertainty-Margin Sampling', color='red', alpha=1)
+plt.plot(Iteration_step, Margin_1, label='Uncertainty-Margin Sampling', color='darkorange', alpha=1)
 plt.plot(Iteration_step, Entropy, label='Uncertainty-Entropy Sampling', color='cyan', alpha=1)
-# plt.plot(Iteration_step, Margin, label='Uncertainty-Margin Sampling', color='darkorange', alpha=1)
 plt.plot(Iteration_step, BALD, label='Bayesian Sampling', color='lime', alpha=1)
 plt.xlabel('Iteration Steps')
 plt.ylabel('Prediction Accuracy')
