@@ -1,0 +1,56 @@
+2020-06-29 02:43:49 AM — INFO — main (163):  DATA NAME: psse
+2020-06-29 02:43:49 AM — INFO — main (164):  STRATEGY: RandomSampling
+2020-06-29 02:43:49 AM — INFO — main (165):  SEED: 1
+2020-06-29 02:43:49 AM — INFO — main (166):  NUM_INIT_LB: 10000
+2020-06-29 02:43:49 AM — INFO — main (167):  NUM_QUERY: 6000
+2020-06-29 02:43:49 AM — INFO — main (168):  NUM_ROUND: 10
+2020-06-29 02:43:49 AM — INFO — main (169):  LEARNING_RATE: 0.001
+2020-06-29 02:43:49 AM — INFO — main (170):  BATCH_SIZE: 64
+2020-06-29 02:43:49 AM — INFO — main (171):  N_EPOCH: 20
+2020-06-29 02:43:49 AM — INFO — predict (73):  Predict using untrained model
+2020-06-29 02:43:50 AM — INFO — main (183):  Initial testing accuracy 0.5
+2020-06-29 02:43:50 AM — INFO — train (63):  Now train with 10000 samples
+2020-06-29 02:44:46 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 02:44:47 AM — INFO — main (193):  Round 0 testing accuracy 0.8282507618973197
+2020-06-29 02:44:47 AM — INFO — main (200):  Round 1
+2020-06-29 02:44:47 AM — INFO — train (63):  Now train with 15977 samples
+2020-06-29 02:46:17 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 02:46:18 AM — INFO — main (214):  testing accuracy 0.8402359928108151
+2020-06-29 02:46:18 AM — INFO — main (200):  Round 2
+2020-06-29 02:46:18 AM — INFO — train (63):  Now train with 21940 samples
+2020-06-29 02:48:21 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 02:48:22 AM — INFO — main (214):  testing accuracy 0.8519281862936626
+2020-06-29 02:48:22 AM — INFO — main (200):  Round 3
+2020-06-29 02:48:22 AM — INFO — train (63):  Now train with 27905 samples
+2020-06-29 02:51:06 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 02:51:07 AM — INFO — main (214):  testing accuracy 0.8789071657419708
+2020-06-29 02:51:07 AM — INFO — main (200):  Round 4
+2020-06-29 02:51:07 AM — INFO — train (63):  Now train with 33865 samples
+2020-06-29 02:54:18 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 02:54:19 AM — INFO — main (214):  testing accuracy 0.8815151988747363
+2020-06-29 02:54:19 AM — INFO — main (200):  Round 5
+2020-06-29 02:54:19 AM — INFO — train (63):  Now train with 39819 samples
+2020-06-29 02:58:14 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 02:58:15 AM — INFO — main (214):  testing accuracy 0.8892806907869032
+2020-06-29 02:58:15 AM — INFO — main (200):  Round 6
+2020-06-29 02:58:15 AM — INFO — train (63):  Now train with 45770 samples
+2020-06-29 03:03:04 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 03:03:05 AM — INFO — main (214):  testing accuracy 0.8593420332890521
+2020-06-29 03:03:05 AM — INFO — main (200):  Round 7
+2020-06-29 03:03:05 AM — INFO — train (63):  Now train with 51733 samples
+2020-06-29 03:09:07 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 03:09:08 AM — INFO — main (214):  testing accuracy 0.877412674845667
+2020-06-29 03:09:08 AM — INFO — main (200):  Round 8
+2020-06-29 03:09:08 AM — INFO — train (63):  Now train with 57696 samples
+2020-06-29 03:15:02 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 03:15:03 AM — INFO — main (214):  testing accuracy 0.8962452137219661
+2020-06-29 03:15:03 AM — INFO — main (200):  Round 9
+2020-06-29 03:15:03 AM — INFO — train (63):  Now train with 63651 samples
+2020-06-29 03:21:20 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 03:21:21 AM — INFO — main (214):  testing accuracy 0.9023013206220208
+2020-06-29 03:21:21 AM — INFO — main (200):  Round 10
+2020-06-29 03:21:21 AM — INFO — train (63):  Now train with 69599 samples
+2020-06-29 03:28:12 AM — INFO — predict (77):  Predict using trained model
+2020-06-29 03:28:13 AM — INFO — main (214):  testing accuracy 0.912704149410018
+2020-06-29 03:28:13 AM — INFO — main (219):  learning complete using 2664.1616003513336 seconds
+2020-06-29 03:28:13 AM — INFO — main (220):  write accuracy records into csv
