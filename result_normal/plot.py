@@ -53,6 +53,8 @@ Random_3 = pd.read_csv("RandomSampling__2020_06_29_06_41.csv")
 
 Iteration_step = range(len(Random_1))
 
+plt.rcParams.update({'font.family': 'Arial'})
+plt.figure(figsize=(9, 55))
 plt.plot(Iteration_step, Random_1, label='Random Sampling', color='black', alpha=1)
 plt.plot(Iteration_step, Random_2, color='black', alpha=1, linestyle=(0, (5, 1)))
 # plt.plot(Iteration_step, Random_3, color='black', alpha=0.8)
@@ -68,11 +70,13 @@ plt.plot(Iteration_step, Entropy_2, color='orange', alpha=1, linestyle=(0, (5, 1
 plt.plot(Iteration_step, BALD_1, label='Bayesian Sampling', color='lime', alpha=1)
 plt.plot(Iteration_step, BALD_2, color='lime', alpha=1, linestyle=(0, (5, 1)))
 # plt.plot(Iteration_step, BALD_3, color='lime', alpha=0.8)
-plt.xlabel('Iteration Steps')
-plt.ylabel('Prediction Accuracy')
-plt.legend(title='Query Method:')
+plt.xlabel('Iteration Steps', fontsize=16)
+plt.ylabel('Prediction Accuracy', fontsize=16)
+plt.legend(fontsize=16)
 plt.grid(color='0.8')
-plt.title('Active Learning for Power Flow Solvability - IEEE 39-bus System')
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.title('Active Learning for Power Flow Solvability - IEEE 39-bus System', fontsize=16)
 plt.show()
 
 

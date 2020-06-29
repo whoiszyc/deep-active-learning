@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 from PIL import Image
 import pickle
 import pandas as pd
+import logging
 
 def get_dataset(name):
     if name == 'MNIST':
@@ -17,59 +18,96 @@ def get_dataset(name):
         return get_CIFAR10()
     elif name == 'iris':
         return get_local_pkl(name)
-    elif name == 'psse':
-        return get_local_csv(name)
 
 
-def get_local_csv(name):
+def normalize(X):
+    mean = np.mean(X, axis=0)
+    std = np.std(X, axis=0)
+    X_norm = (X.T - mean[:, None]).T
+    X_norm = (X_norm.T / std[:, None]).T
+    X_norm[np.isnan(X_norm)] = 0
+    return X_norm, mean, std
+
+
+def get_local_csv(X_dir_file, Y_dir_file, logger, train_split=0.8, test_option=0, flag_normal=0):
     """
     data preprocessing
     """
     print("read X Y data frame from csv")
-    data_x = pd.read_csv('data/data_x.csv')
-    data_y = pd.read_csv('data/data_y.csv')
+    x = pd.read_csv(X_dir_file)
+    y = pd.read_csv(Y_dir_file)
 
     # transfer data into matrices (tensor)
     print("convert data to numpy matrix")
-    Full_Data = data_x.to_numpy()
-    Full_Label = data_y.to_numpy()
+    x = x.to_numpy()
+    y = y.to_numpy()
 
-    # # Randomly permute a sequence, or return a permuted range.
-    indecs = np.random.permutation(len(Full_Data))
-    Full_Data = Full_Data[indecs]
-    Full_Label = Full_Label[indecs]
+    # randomly permute a sequence, or return a permuted range.
+    indecs = np.random.permutation(len(x))
+    x = x[indecs]
+    y = y[indecs]
+
+    # data normalization is very important
+    if flag_normal == 1:
+        logger.info("Normalize dataset x")
+        x, x_mean, x_std = normalize(x)
 
     # get dimension
-    n_sample, n_feature = Full_Data.shape
-    _, n_label = Full_Label.shape
+    n_sample, n_feature = x.shape
+    _, n_label = y.shape
+
+    # add logger
+    logger.info("Sample number: ".format(n_sample))
+    logger.info("Feature number: ".format(n_feature))
+    logger.info("Label number: ".format(n_label))
 
     # create balanced data
-    idx_zero = np.where(Full_Label == 0)[0]
-    idx_one = np.where(Full_Label == 1)[0]
+    print("create balanced data")
+    logger.info("create balanced data")
+    idx_zero = np.where(y == 0)[0]
+    idx_one = np.where(y == 1)[0]
     idx_zero_part = idx_zero[:len(idx_one)]
     idx_eq = np.concatenate((idx_one, idx_zero_part), axis=None)
-    Full_Data_eq = Full_Data[idx_eq]
-    Full_Label_eq = Full_Label[idx_eq]
+    x_bal = x[idx_eq]
+    y_bal = y[idx_eq]
+    logger.info("Balance data numbers: ".format(len(y_bal)))
 
-    X_tr = Full_Data
-    Y_tr = Full_Label
-    X_te = Full_Data_eq
-    Y_te = Full_Label_eq
+    # split training and testing data
+    # training set
+    print("Using {} for training".format(n_sample * train_split))
+    logger.info("Using {} for training".format(n_sample * train_split))
+    x_tr = x[:int(n_sample * train_split)]
+    y_tr = y[:int(n_sample * train_split)]
 
-    X_tr = torch.FloatTensor(X_tr)
-    Y_tr = torch.FloatTensor(Y_tr)
+    if test_option == 0:
+        logger.info("Test option 0: using {}% portion from the entire dataset".format((1-train_split)*100))
+        X_te = x[int(n_sample * (1 - train_split)):]
+        y_te = y[int(n_sample * (1 - train_split)):]
+    elif test_option == 1:
+        logger.info("Test option 1: using all balance dataset")
+        X_te = x_bal
+        y_te = y_bal
+    elif test_option == 2:
+        logger.info("Test option 2: using the entire dataset")
+        X_te = x
+        y_te = y
+    else:
+        print("Must specify a testing option")
+
+    x_tr = torch.FloatTensor(x_tr)
+    y_tr = torch.FloatTensor(y_tr)
     X_te = torch.FloatTensor(X_te)
-    Y_te = torch.FloatTensor(Y_te)
+    y_te = torch.FloatTensor(y_te)
 
     # we change label data to long tensor if we consider it as a multi-label classification
-    Y_tr = Y_tr.transpose(0, 1)
-    Y_tr = Y_tr.long()
-    Y_te = Y_te.transpose(0, 1)
-    Y_te = Y_te.long()
-    Y_tr = Y_tr[0]
-    Y_te = Y_te[0]
+    y_tr = y_tr.transpose(0, 1)
+    y_tr = y_tr.long()
+    y_te = y_te.transpose(0, 1)
+    y_te = y_te.long()
+    y_tr = y_tr[0]
+    y_te = y_te[0]
 
-    return X_tr, Y_tr, X_te, Y_te
+    return x_tr, y_tr, X_te, y_te
 
 
 def get_local_pkl(name):

@@ -85,7 +85,7 @@ class Net4(nn.Module):
     def __init__(self):
         super(Net4, self).__init__()
         #TODO: auto feature and label numbers
-        n_feature = 56
+        n_feature = 2
         n_label = 2
         self.fc1 = nn.Linear(n_feature, 100)
         self.fc2 = nn.Linear(100, 200)

@@ -4,7 +4,8 @@ from datetime import datetime
 import time
 import logging
 import sys
-from dataset import get_dataset, get_handler
+import os
+from dataset import get_dataset, get_handler, get_local_csv
 from model import get_net
 from torchvision import transforms
 import torch
@@ -20,7 +21,7 @@ def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
     """
     logger = logging.getLogger(logger_name)
     logger.setLevel(level)
-    format_string = ("%(asctime)s — %(levelname)s — %(funcName)s (%(lineno)d):  %(message)s")
+    format_string = ("%(asctime)s - %(levelname)s - %(funcName)s (%(lineno)d):  %(message)s")
     datefmt = '%Y-%m-%d %I:%M:%S %p'
     log_format = logging.Formatter(format_string, datefmt)
 
@@ -38,7 +39,7 @@ def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
     return logger
 
 
-def main(para_seed=1, method=None, result_dir=None):
+def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None):
     # parameters
     SEED = para_seed
 
@@ -88,14 +89,45 @@ def main(para_seed=1, method=None, result_dir=None):
     torch.manual_seed(SEED)
     torch.backends.cudnn.enabled = False
 
+
+    # create dir for results
+    now = datetime.now()
+    dt_string = now.strftime("__%Y_%m_%d_%H_%M")
+    # check if the dir is given
+    if result_dir is not None:
+        # if given, check if the saving directory exists
+        # if not given, create dir
+        if not os.path.isdir(result_dir):
+            os.makedirs(result_dir)
+        FILENAME_CSV = result_dir + '/' + method + dt_string + '.csv'
+        FILENAME_LOG = result_dir + '/' + method + dt_string + '.log'
+    elif result_dir is None:
+        # if dir is not given, save results at root dir
+        FILENAME_CSV = method + dt_string + '.csv'
+        FILENAME_LOG = method + dt_string + '.log'
+
+    # in order to create a new log file at each iteration, we need to create an object
+    logger = logger_obj(logger_name=FILENAME_LOG, level=logging.DEBUG)
+    # logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %I:%M:%S %p',
+    #                     filename=FILENAME_LOG, level=logging.DEBUG)
+    logger.info('DATA NAME: ' + DATA_NAME)
+    logger.info('STRATEGY: ' + method)
+    logger.info('SEED: {}'.format(SEED))
+    logger.info('NUM_INIT_LB: {}'.format(NUM_INIT_LB))
+    logger.info('NUM_QUERY: {}'.format(NUM_QUERY))
+    logger.info('NUM_ROUND: {}'.format(NUM_ROUND))
+    logger.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
+    logger.info('BATCH_SIZE: {}'.format(BATCH_SIZE))
+    logger.info('N_EPOCH: {}'.format(N_EPOCH))
+
     # load dataset
-    X_tr, Y_tr, X_te, Y_te = get_dataset(DATA_NAME)
-    # X_tr = X_tr[:300]
-    # Y_tr = Y_tr[:300]
+    #TODO
+    # x_tr, y_tr, x_te, y_te = get_dataset(DATA_NAME)
+    x_tr, y_tr, x_te, y_te = get_local_csv(X_dir_file, Y_dir_file, logger, train_split=0.8, test_option=0, flag_normal=1)
 
     # start experiment
-    n_pool = len(Y_tr)
-    n_test = len(Y_te)
+    n_pool = len(y_tr)
+    n_test = len(y_te)
     print('number of labeled pool: {}'.format(NUM_INIT_LB))
     print('number of unlabeled pool: {}'.format(n_pool - NUM_INIT_LB))
     print('number of testing pool: {}'.format(n_test))
@@ -111,64 +143,41 @@ def main(para_seed=1, method=None, result_dir=None):
     idxs_lb[idxs_tmp[:NUM_INIT_LB]] = True
 
     # load network
+    # TODO: define machine learning models
     net = get_net(DATA_NAME)
     handler = get_handler(DATA_NAME)
 
     if method == "RandomSampling":
-        strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = RandomSampling(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "LeastConfidence":
-        strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = LeastConfidence(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "MarginSampling":
-        strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = MarginSampling(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "EntropySampling":
-        strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = EntropySampling(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "LeastConfidenceDropout":
-        strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+        strategy = LeastConfidenceDropout(x_tr, y_tr, idxs_lb, net, handler, args, n_drop=10)
     elif method == "MarginSamplingDropout":
-        strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+        strategy = MarginSamplingDropout(x_tr, y_tr, idxs_lb, net, handler, args, n_drop=10)
     elif method == "EntropySamplingDropout":
-        strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+        strategy = EntropySamplingDropout(x_tr, y_tr, idxs_lb, net, handler, args, n_drop=10)
     elif method == "KMeansSampling":
-        strategy = KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = KMeansSampling(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "KCenterGreedy":
-        strategy = KCenterGreedy(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = KCenterGreedy(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "BALDDropout":
-        strategy = BALDDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+        strategy = BALDDropout(x_tr, y_tr, idxs_lb, net, handler, args, n_drop=10)
     elif method == "CoreSet":
-        strategy = CoreSet(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = CoreSet(x_tr, y_tr, idxs_lb, net, handler, args)
     elif method == "AdversarialBIM":
-        strategy = AdversarialBIM(X_tr, Y_tr, idxs_lb, net, handler, args, eps=0.05)
+        strategy = AdversarialBIM(x_tr, y_tr, idxs_lb, net, handler, args, eps=0.05)
     elif method == "AdversarialDeepFool":
-       strategy = AdversarialDeepFool(X_tr, Y_tr, idxs_lb, net, handler, args, max_iter=50)
+       strategy = AdversarialDeepFool(x_tr, y_tr, idxs_lb, net, handler, args, max_iter=50)
     elif method == None:
         # customized setup
-        strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+        strategy = MarginSampling(x_tr, y_tr, idxs_lb, net, handler, args)
         # strategy = ActiveLearningByLearning(X_tr, Y_tr, idxs_lb, net, handler, args, strategy_list=albl_list, delta=0.1)
 
-    # create logging file
-    now = datetime.now()
-    dt_string = now.strftime("__%Y_%m_%d_%H_%M")
-    if result_dir != None:
-        FILENAME_CSV = result_dir + '/' + type(strategy).__name__ + dt_string + '.csv'
-        FILENAME_LOG = result_dir + '/' + type(strategy).__name__ + dt_string + '.log'
-    elif result_dir == None:
-        FILENAME_CSV = type(strategy).__name__ + dt_string + '.csv'
-        FILENAME_LOG = type(strategy).__name__ + dt_string + '.log'
-
-
-    # in order to create a new log file at each iteration, we need to create an object
-    logger = logger_obj(logger_name=FILENAME_LOG, level=logging.DEBUG)
-    # logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %I:%M:%S %p',
-    #                     filename=FILENAME_LOG, level=logging.DEBUG)
-    logger.info('DATA NAME: ' + DATA_NAME)
-    logger.info('STRATEGY: ' + type(strategy).__name__)
-    logger.info('SEED: {}'.format(SEED))
-    logger.info('NUM_INIT_LB: {}'.format(NUM_INIT_LB))
-    logger.info('NUM_QUERY: {}'.format(NUM_QUERY))
-    logger.info('NUM_ROUND: {}'.format(NUM_ROUND))
-    logger.info('LEARNING_RATE: {}'.format(LEARNING_RATE))
-    logger.info('BATCH_SIZE: {}'.format(BATCH_SIZE))
-    logger.info('N_EPOCH: {}'.format(N_EPOCH))
 
     # record accuracy
     acc_list = []
@@ -177,8 +186,8 @@ def main(para_seed=1, method=None, result_dir=None):
     start_time = time.time()
 
     # predict with untrained model
-    P = strategy.predict(X_te, Y_te, logger, flag=1)
-    acc_init = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+    P = strategy.predict(x_te, y_te, logger, flag=1)
+    acc_init = 1.0 * (y_te == P).sum().item() / len(y_te)
     print('Initial testing accuracy {}'.format(acc_init))
     logger.info('Initial testing accuracy {}'.format(acc_init))
     acc_list.append(acc_init)
@@ -187,8 +196,8 @@ def main(para_seed=1, method=None, result_dir=None):
     strategy.train(logger)
 
     # testing
-    P = strategy.predict(X_te, Y_te, logger)
-    acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+    P = strategy.predict(x_te, y_te, logger)
+    acc = 1.0 * (y_te == P).sum().item() / len(y_te)
     print('Round 0 testing accuracy {}'.format(acc))
     logger.info('Round 0 testing accuracy {}'.format(acc))
     # record acc to list
@@ -208,8 +217,8 @@ def main(para_seed=1, method=None, result_dir=None):
         strategy.train(logger)
 
         # testing
-        P = strategy.predict(X_te, Y_te, logger)
-        acc = 1.0 * (Y_te == P).sum().item() / len(Y_te)
+        P = strategy.predict(x_te, y_te, logger)
+        acc = 1.0 * (y_te == P).sum().item() / len(y_te)
         print('testing accuracy {}'.format(acc))
         logger.info('testing accuracy {}'.format(acc))
 
@@ -227,4 +236,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main(para_seed=2, method="MarginSampling", result_dir="result")
+    main('data/data_x_2d.csv', 'data/data_y_2d.csv', para_seed=2, method="MarginSampling", result_dir="result_2d")
