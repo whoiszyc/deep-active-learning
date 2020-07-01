@@ -5,6 +5,7 @@ import time
 import logging
 import sys
 import os
+import matplotlib.pyplot as plt
 from dataset import get_dataset, get_handler, get_local_csv
 from model import get_net
 from torchvision import transforms
@@ -39,13 +40,13 @@ def logger_obj(logger_name, level=logging.DEBUG, verbose=0):
     return logger
 
 
-def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None):
+def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visual=False):
     # parameters
     SEED = para_seed
 
-    NUM_INIT_LB = 10000
-    NUM_QUERY = 10000
-    NUM_ROUND = 20
+    NUM_INIT_LB = 100
+    NUM_QUERY = 20
+    NUM_ROUND = 30
     LEARNING_RATE = 1e-3
     BATCH_SIZE = 64
     N_EPOCH = 20
@@ -121,9 +122,9 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None):
     logger.info('N_EPOCH: {}'.format(N_EPOCH))
 
     # load dataset
-    #TODO
+    #TODO: Load data
     # x_tr, y_tr, x_te, y_te = get_dataset(DATA_NAME)
-    x_tr, y_tr, x_te, y_te = get_local_csv(X_dir_file, Y_dir_file, logger, train_split=0.8, test_option=0, flag_normal=1)
+    x_tr, y_tr, x_te, y_te = get_local_csv(X_dir_file, Y_dir_file, logger, train_split=0.6, test_option=2, flag_normal=1)
 
     # start experiment
     n_pool = len(y_tr)
@@ -143,8 +144,10 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None):
     idxs_lb[idxs_tmp[:NUM_INIT_LB]] = True
 
     # load network
-    # TODO: define machine learning models
+    # TODO: Pytorch Dataset and DataLoader
     net = get_net(DATA_NAME)
+
+    # TODO: define machine learning models
     handler = get_handler(DATA_NAME)
 
     if method == "RandomSampling":
@@ -203,14 +206,34 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None):
     # record acc to list
     acc_list.append(acc)
 
+    # we enable visualization function if it is a 2-D problem
+    if visual == True:
+        plt.figure(figsize=(9, 6))
+        plt.rcParams.update({'font.family': 'Arial'})
+        plt.title('Queried samples through active learning', fontsize=16)
+        plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], alpha=0.1)
+        plt.pause(1)
 
     for rd in range(1, NUM_ROUND+1):
         print('Round {}'.format(rd))
         logger.info('Round {}'.format(rd))
 
         # query
+        print("Querying samples")
         q_idxs = strategy.query(NUM_QUERY, logger)
         idxs_lb[q_idxs] = True
+        logger.info("Query {} samples".format(len(q_idxs)))
+
+        # plot queried samples if visual is true assuming a 2-D problem
+        if visual == True:
+            # df = pd.DataFrame(dict(x=x_tr[q_idxs][:, 0], y=x_tr[q_idxs][:, 1], label=y_tr[q_idxs]))
+            # groups = df.groupby('label')
+            # for name, group in groups:
+            #     plt.plot(group.x, group.y,  marker='o', linestyle='', ms=12, label=name)
+            # plt.legend()
+            # plt.pause(0.2)
+            plt.scatter(x_tr[q_idxs][:, 0], x_tr[q_idxs][:, 1], c=y_tr[q_idxs])
+            plt.pause(1)
 
         # update
         strategy.update(idxs_lb)
@@ -236,4 +259,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main('data/data_x_2d.csv', 'data/data_y_2d.csv', para_seed=2, method="MarginSampling", result_dir="result_2d")
+    main('data/data_x_2d.csv', 'data/data_y_2d.csv', para_seed=5, method="MarginSampling", result_dir="result_2d",  visual=True)

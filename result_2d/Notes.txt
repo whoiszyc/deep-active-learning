@@ -1,0 +1,2 @@
+Comparing between 17-51 and 23-15, Epoch (iteration) should be large enough, such as 100, so that the accuracy will not oscillate.
+On the other hand, query round can be smaller such as 10.
