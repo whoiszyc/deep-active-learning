@@ -6,6 +6,7 @@ import logging
 import sys
 import os
 import matplotlib.pyplot as plt
+import matplotlib.colors
 from dataset import get_dataset, get_handler, get_local_csv
 from model import get_net
 from torchvision import transforms
@@ -46,10 +47,10 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
 
     NUM_INIT_LB = 100
     NUM_QUERY = 20
-    NUM_ROUND = 30
+    NUM_ROUND = 10
     LEARNING_RATE = 1e-3
     BATCH_SIZE = 64
-    N_EPOCH = 20
+    N_EPOCH = 50
 
     DATA_NAME = 'psse'
     # DATA_NAME = 'MNIST'
@@ -206,13 +207,17 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
     # record acc to list
     acc_list.append(acc)
 
+    # colormap
+    cmap_1 = matplotlib.colors.LinearSegmentedColormap.from_list("", ["red", "blue"])
+
     # we enable visualization function if it is a 2-D problem
     if visual == True:
         plt.figure(figsize=(9, 6))
         plt.rcParams.update({'font.family': 'Arial'})
         plt.title('Queried samples through active learning', fontsize=16)
-        plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], alpha=0.1)
+        plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], cmap=cmap_1, alpha=0.1)
         plt.pause(1)
+
 
     for rd in range(1, NUM_ROUND+1):
         print('Round {}'.format(rd))
@@ -232,7 +237,7 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
             #     plt.plot(group.x, group.y,  marker='o', linestyle='', ms=12, label=name)
             # plt.legend()
             # plt.pause(0.2)
-            plt.scatter(x_tr[q_idxs][:, 0], x_tr[q_idxs][:, 1], c=y_tr[q_idxs])
+            plt.scatter(x_tr[q_idxs][:, 0], x_tr[q_idxs][:, 1], c=y_tr[q_idxs], cmap=cmap_1)
             plt.pause(1)
 
         # update
@@ -259,4 +264,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main('data/data_x_2d.csv', 'data/data_y_2d.csv', para_seed=5, method="MarginSampling", result_dir="result_2d",  visual=True)
+    main('data/data_2d_pq_X.csv', 'data/data_2d_pq_Y.csv', para_seed=5, method="MarginSampling", result_dir="result_2d",  visual=True)

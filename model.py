@@ -98,7 +98,9 @@ class Net4(nn.Module):
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
         x = F.relu(self.fc4(x))
-        x = self.out(x)  # softmax   sigmoid
+        x = self.out(x)
+        # apply "softmax" or "sigmoid" if needed
+        x = F.softmax(x)
         return x, 0
 
     def get_embedding_dim(self):

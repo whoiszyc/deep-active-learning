@@ -1,0 +1,26 @@
+2020-07-01 01:45:37 AM - INFO - main (114):  DATA NAME: psse
+2020-07-01 01:45:37 AM - INFO - main (115):  STRATEGY: MarginSampling
+2020-07-01 01:45:37 AM - INFO - main (116):  SEED: 5
+2020-07-01 01:45:37 AM - INFO - main (117):  NUM_INIT_LB: 100
+2020-07-01 01:45:37 AM - INFO - main (118):  NUM_QUERY: 20
+2020-07-01 01:45:37 AM - INFO - main (119):  NUM_ROUND: 10
+2020-07-01 01:45:37 AM - INFO - main (120):  LEARNING_RATE: 0.001
+2020-07-01 01:45:37 AM - INFO - main (121):  BATCH_SIZE: 64
+2020-07-01 01:45:37 AM - INFO - main (122):  N_EPOCH: 100
+2020-07-01 01:45:37 AM - INFO - get_local_csv (52):  Normalize dataset x
+2020-07-01 01:45:37 AM - INFO - get_local_csv (60):  Sample number: 
+2020-07-01 01:45:37 AM - INFO - get_local_csv (61):  Feature number: 
+2020-07-01 01:45:37 AM - INFO - get_local_csv (62):  Label number: 
+2020-07-01 01:45:37 AM - INFO - get_local_csv (66):  create balanced data
+2020-07-01 01:45:37 AM - INFO - get_local_csv (73):  Balance data numbers: 
+2020-07-01 01:45:37 AM - INFO - get_local_csv (78):  Using 60000.0 for training
+2020-07-01 01:45:37 AM - INFO - get_local_csv (91):  Test option 2: using the entire dataset
+2020-07-01 01:45:37 AM - INFO - predict (73):  Predict using untrained model
+2020-07-01 01:45:41 AM - INFO - main (195):  Initial testing accuracy 0.79235
+2020-07-01 01:45:41 AM - INFO - train (63):  Now train with 100 samples
+2020-07-01 01:49:39 AM - INFO - predict (77):  Predict using trained model
+2020-07-01 01:49:42 AM - INFO - main (205):  Round 0 testing accuracy 0.95866
+2020-07-01 01:49:44 AM - INFO - main (219):  Round 1
+2020-07-01 01:49:44 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59900, 2])
+2020-07-01 01:49:47 AM - INFO - main (225):  Query 20 samples
+2020-07-01 01:49:48 AM - INFO - train (63):  Now train with 120 samples
