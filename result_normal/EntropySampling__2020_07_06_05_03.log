@@ -1,0 +1,66 @@
+2020-07-06 05:03:59 AM — INFO — main (163):  DATA NAME: psse
+2020-07-06 05:03:59 AM — INFO — main (164):  STRATEGY: EntropySampling
+2020-07-06 05:03:59 AM — INFO — main (165):  SEED: 21
+2020-07-06 05:03:59 AM — INFO — main (166):  NUM_INIT_LB: 10000
+2020-07-06 05:03:59 AM — INFO — main (167):  NUM_QUERY: 6000
+2020-07-06 05:03:59 AM — INFO — main (168):  NUM_ROUND: 10
+2020-07-06 05:03:59 AM — INFO — main (169):  LEARNING_RATE: 0.001
+2020-07-06 05:03:59 AM — INFO — main (170):  BATCH_SIZE: 64
+2020-07-06 05:03:59 AM — INFO — main (171):  N_EPOCH: 100
+2020-07-06 05:03:59 AM — INFO — predict (73):  Predict using untrained model
+2020-07-06 05:04:00 AM — INFO — main (183):  Initial testing accuracy 0.5
+2020-07-06 05:04:00 AM — INFO — train (63):  Now train with 10000 samples
+2020-07-06 05:08:45 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 05:08:46 AM — INFO — main (193):  Round 0 testing accuracy 0.8118504336953973
+2020-07-06 05:08:46 AM — INFO — main (200):  Round 1
+2020-07-06 05:08:46 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([490000, 2])
+2020-07-06 05:08:51 AM — INFO — train (63):  Now train with 16000 samples
+2020-07-06 05:16:24 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 05:16:26 AM — INFO — main (214):  testing accuracy 0.8497499413925139
+2020-07-06 05:16:26 AM — INFO — main (200):  Round 2
+2020-07-06 05:16:26 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([484000, 2])
+2020-07-06 05:16:29 AM — INFO — train (63):  Now train with 22000 samples
+2020-07-06 05:27:07 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 05:27:08 AM — INFO — main (214):  testing accuracy 0.8685336406970384
+2020-07-06 05:27:08 AM — INFO — main (200):  Round 3
+2020-07-06 05:27:08 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([478000, 2])
+2020-07-06 05:27:12 AM — INFO — train (63):  Now train with 28000 samples
+2020-07-06 05:40:25 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 05:40:26 AM — INFO — main (214):  testing accuracy 0.8814663593029616
+2020-07-06 05:40:26 AM — INFO — main (200):  Round 4
+2020-07-06 05:40:26 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([472000, 2])
+2020-07-06 05:40:30 AM — INFO — train (63):  Now train with 34000 samples
+2020-07-06 05:56:58 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 05:57:00 AM — INFO — main (214):  testing accuracy 0.845862311479253
+2020-07-06 05:57:00 AM — INFO — main (200):  Round 5
+2020-07-06 05:57:00 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([466000, 2])
+2020-07-06 05:57:04 AM — INFO — train (63):  Now train with 40000 samples
+2020-07-06 06:17:24 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 06:17:25 AM — INFO — main (214):  testing accuracy 0.8768461358130812
+2020-07-06 06:17:25 AM — INFO — main (200):  Round 6
+2020-07-06 06:17:26 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([460000, 2])
+2020-07-06 06:17:30 AM — INFO — train (63):  Now train with 46000 samples
+2020-07-06 06:39:46 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 06:39:47 AM — INFO — main (214):  testing accuracy 0.899605376260061
+2020-07-06 06:39:47 AM — INFO — main (200):  Round 7
+2020-07-06 06:39:47 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([454000, 2])
+2020-07-06 06:39:51 AM — INFO — train (63):  Now train with 52000 samples
+2020-07-06 07:05:06 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 07:05:07 AM — INFO — main (214):  testing accuracy 0.8961084629209971
+2020-07-06 07:05:07 AM — INFO — main (200):  Round 8
+2020-07-06 07:05:07 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([448000, 2])
+2020-07-06 07:05:11 AM — INFO — train (63):  Now train with 58000 samples
+2020-07-06 07:32:43 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 07:32:44 AM — INFO — main (214):  testing accuracy 0.9065894350238337
+2020-07-06 07:32:44 AM — INFO — main (200):  Round 9
+2020-07-06 07:32:44 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([442000, 2])
+2020-07-06 07:32:47 AM — INFO — train (63):  Now train with 64000 samples
+2020-07-06 08:04:56 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 08:04:57 AM — INFO — main (214):  testing accuracy 0.9113854809721028
+2020-07-06 08:04:57 AM — INFO — main (200):  Round 10
+2020-07-06 08:04:57 AM — DEBUG — predict_prob (102):  shape of probs is torch.Size([436000, 2])
+2020-07-06 08:05:01 AM — INFO — train (63):  Now train with 70000 samples
+2020-07-06 08:40:14 AM — INFO — predict (77):  Predict using trained model
+2020-07-06 08:40:15 AM — INFO — main (214):  testing accuracy 0.9289579588966164
+2020-07-06 08:40:15 AM — INFO — main (219):  learning complete using 12976.761024475098 seconds
+2020-07-06 08:40:15 AM — INFO — main (220):  write accuracy records into csv
