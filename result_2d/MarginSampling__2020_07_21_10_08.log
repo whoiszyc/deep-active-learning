@@ -1,0 +1,31 @@
+2020-07-21 10:08:40 AM - INFO - main (115):  DATA NAME: psse
+2020-07-21 10:08:40 AM - INFO - main (116):  STRATEGY: MarginSampling
+2020-07-21 10:08:40 AM - INFO - main (117):  SEED: 1
+2020-07-21 10:08:40 AM - INFO - main (118):  NUM_INIT_LB: 100
+2020-07-21 10:08:40 AM - INFO - main (119):  NUM_QUERY: 20
+2020-07-21 10:08:40 AM - INFO - main (120):  NUM_ROUND: 1
+2020-07-21 10:08:40 AM - INFO - main (121):  LEARNING_RATE: 0.001
+2020-07-21 10:08:40 AM - INFO - main (122):  BATCH_SIZE: 64
+2020-07-21 10:08:40 AM - INFO - main (123):  N_EPOCH: 50
+2020-07-21 10:08:40 AM - INFO - get_local_csv (52):  Normalize dataset x
+2020-07-21 10:08:40 AM - INFO - get_local_csv (60):  Sample number: 
+2020-07-21 10:08:40 AM - INFO - get_local_csv (61):  Feature number: 
+2020-07-21 10:08:40 AM - INFO - get_local_csv (62):  Label number: 
+2020-07-21 10:08:40 AM - INFO - get_local_csv (66):  create balanced data
+2020-07-21 10:08:40 AM - INFO - get_local_csv (73):  Balance data numbers: 
+2020-07-21 10:08:40 AM - INFO - get_local_csv (78):  Using 60000.0 for training
+2020-07-21 10:08:40 AM - INFO - get_local_csv (91):  Test option 2: using the entire dataset
+2020-07-21 10:08:40 AM - INFO - predict (73):  Predict using untrained model
+2020-07-21 10:08:43 AM - INFO - main (196):  Initial testing accuracy 0.79235
+2020-07-21 10:08:43 AM - INFO - train (63):  Now train with 100 samples
+2020-07-21 10:10:43 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 10:10:46 AM - INFO - main (206):  Round 0 testing accuracy 0.9653
+2020-07-21 10:10:48 AM - INFO - main (229):  Round 1
+2020-07-21 10:10:48 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59900, 2])
+2020-07-21 10:10:51 AM - INFO - main (235):  Query 20 samples
+2020-07-21 10:10:52 AM - INFO - train (63):  Now train with 120 samples
+2020-07-21 10:12:47 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 10:12:51 AM - INFO - main (256):  testing accuracy 0.98187
+2020-07-21 10:12:51 AM - INFO - main (261):  learning complete using 250.94118285179138 seconds
+2020-07-21 10:12:51 AM - INFO - main (262):  write accuracy records into csv
+2020-07-21 10:12:51 AM - INFO - predict (77):  Predict using trained model

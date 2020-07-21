@@ -29,56 +29,63 @@ linestyle_tuple = [
 # Under the same SEED, the same methods will have the same results
 # Under the same SEED, Margin and LeastConfidence will have the same results
 
+BALD = pd.read_csv("BALDDropout__2020_07_01_17_14.csv").T
+BALD = BALD.append(pd.read_csv("BALDDropout__2020_07_02_11_54.csv").T, ignore_index=True)
+BALD = BALD.append(pd.read_csv("BALDDropout__2020_07_05_13_59.csv").T, ignore_index=True)
+BALD = BALD.append(pd.read_csv("BALDDropout__2020_07_05_13_59.csv").T, ignore_index=True)
+BALD = BALD.append(pd.read_csv("BALDDropout__2020_07_05_13_59.csv").T, ignore_index=True)
 
-BALD_1 = pd.read_csv("BALDDropout__2020_06_29_00_36.csv")
-BALD_2 = pd.read_csv("BALDDropout__2020_06_29_05_49.csv")
-BALD_3 = pd.read_csv("BALDDropout__2020_06_29_09_43.csv")
+Entropy = pd.read_csv("EntropySampling__2020_07_01_13_34.csv").T
+Entropy = Entropy.append(pd.read_csv("EntropySampling__2020_07_02_08_14.csv").T, ignore_index=True)
+Entropy = Entropy.append(pd.read_csv("EntropySampling__2020_07_05_10_25.csv").T, ignore_index=True)
+Entropy = Entropy.append(pd.read_csv("EntropySampling__2020_07_06_05_03.csv").T, ignore_index=True)
+Entropy = Entropy.append(pd.read_csv("EntropySampling__2020_07_07_08_12.csv").T, ignore_index=True)
 
-Entropy_1 = pd.read_csv("EntropySampling__2020_06_29_01_29.csv")
-Entropy_2 = pd.read_csv("EntropySampling__2020_06_29_05_03.csv")
-Entropy_3 = pd.read_csv("EntropySampling__2020_06_29_08_57.csv")
+LeastConfidence = pd.read_csv("LeastConfidence__2020_07_01_05_54.csv").T
+LeastConfidence = LeastConfidence.append(pd.read_csv("LeastConfidence__2020_07_02_00_39.csv").T, ignore_index=True)
+LeastConfidence = LeastConfidence.append(pd.read_csv("LeastConfidence__2020_07_05_02_40.csv").T, ignore_index=True)
+LeastConfidence = LeastConfidence.append(pd.read_csv("LeastConfidence__2020_07_05_21_19.csv").T, ignore_index=True)
+LeastConfidence = LeastConfidence.append(pd.read_csv("LeastConfidence__2020_07_06_20_08.csv").T, ignore_index=True)
 
-LeastConfidence_1 = pd.read_csv("LeastConfidence__2020_06_28_21_51.csv")
-LeastConfidence_2 = pd.read_csv("LeastConfidence__2020_06_29_03_28.csv")
-LeastConfidence_3 = pd.read_csv("LeastConfidence__2020_06_29_07_22.csv")
+Margin = pd.read_csv("MarginSampling__2020_07_01_09_44.csv").T
+Margin = Margin.append(pd.read_csv("MarginSampling__2020_07_02_04_30.csv").T, ignore_index=True)
+Margin = Margin.append(pd.read_csv("MarginSampling__2020_07_05_06_34.csv").T, ignore_index=True)
+Margin = Margin.append(pd.read_csv("MarginSampling__2020_07_06_01_13.csv").T, ignore_index=True)
+Margin = Margin.append(pd.read_csv("MarginSampling__2020_07_07_03_02.csv").T, ignore_index=True)
 
-Margin_1 = pd.read_csv("MarginSampling__2020_06_28_23_36.csv")
-Margin_2 = pd.read_csv("MarginSampling__2020_06_29_04_16.csv")
-Margin_3 = pd.read_csv("MarginSampling__2020_06_29_08_09.csv")
+Random = pd.read_csv("RandomSampling__2020_07_01_02_19.csv").T
+Random = Random.append(pd.read_csv("RandomSampling__2020_07_01_21_01.csv").T, ignore_index=True)
+Random = Random.append(pd.read_csv("RandomSampling__2020_07_04_23_03.csv").T, ignore_index=True)
+Random = Random.append(pd.read_csv("RandomSampling__2020_07_05_17_46.csv").T, ignore_index=True)
+Random = Random.append(pd.read_csv("RandomSampling__2020_07_06_13_54.csv").T, ignore_index=True)
 
-Random_1 = pd.read_csv("RandomSampling__2020_06_28_22_40.csv")
-Random_2 = pd.read_csv("RandomSampling__2020_06_29_02_43.csv")
-Random_3 = pd.read_csv("RandomSampling__2020_06_29_06_41.csv")
+Iteration_step = range(Random.shape[1])
 
-
-Iteration_step = range(len(Random_1))
 
 plt.rcParams.update({'font.family': 'Arial'})
-plt.figure(figsize=(9, 55))
-plt.plot(Iteration_step, Random_1, label='Random Sampling', color='black', alpha=1)
-plt.plot(Iteration_step, Random_2, color='black', alpha=1, linestyle=(0, (5, 1)))
-# plt.plot(Iteration_step, Random_3, color='black', alpha=0.8)
-plt.plot(Iteration_step, LeastConfidence_1, label='Uncertainty-LeastConfidence Sampling', color='blue', alpha=1)
-plt.plot(Iteration_step, LeastConfidence_2, color='blue', alpha=1, linestyle=(0, (5, 1)))
-# plt.plot(Iteration_step, LeastConfidence_3, color='blue', alpha=0.8)
-plt.plot(Iteration_step, Margin_1, label='Uncertainty-Margin Sampling', color='red', alpha=1, linestyle=(0, (5, 10)))
-plt.plot(Iteration_step, Margin_2, color='red', alpha=1, linestyle=(0, (1, 1)))
-# plt.plot(Iteration_step, Margin_3, color='red', alpha=0.8)
-plt.plot(Iteration_step, Entropy_1, label='Uncertainty-Entropy Sampling', color='orange', alpha=1)
-plt.plot(Iteration_step, Entropy_2, color='orange', alpha=1, linestyle=(0, (5, 1)))
-# plt.plot(Iteration_step, Entropy_3, color='orange', alpha=0.8)
-plt.plot(Iteration_step, BALD_1, label='Bayesian Sampling', color='lime', alpha=1)
-plt.plot(Iteration_step, BALD_2, color='lime', alpha=1, linestyle=(0, (5, 1)))
-# plt.plot(Iteration_step, BALD_3, color='lime', alpha=0.8)
-plt.xlabel('Iteration Steps', fontsize=16)
-plt.ylabel('Prediction Accuracy', fontsize=16)
-plt.legend(fontsize=16)
+plt.figure(figsize=(9, 7))
+# Random
+plt.plot(Iteration_step, Random.mean(), label='Random Sampling', color='black', alpha=1)
+plt.fill_between(Iteration_step, Random.mean() - Random.std(), Random.mean() + Random.std(), facecolor='black', alpha=0.3)
+# LeastConfidence
+plt.plot(Iteration_step, LeastConfidence.mean(), label='Uncertainty-Least Confidence Sampling', color='blue', alpha=1)
+plt.fill_between(Iteration_step, LeastConfidence.mean() - LeastConfidence.std(), LeastConfidence.mean() + LeastConfidence.std(),
+         color='blue', alpha=0.3)
+# Margin
+plt.plot(Iteration_step, Margin.mean(), label='Uncertainty-Margin Sampling', color='red', alpha=1)
+plt.fill_between(Iteration_step, Margin.mean() - Margin.std(), Margin.mean() + Margin.std(), facecolor='red', alpha=0.3)
+# Entropy
+plt.plot(Iteration_step, Entropy.mean(), label='Uncertainty-Entropy Sampling', color='orange', alpha=1)
+plt.fill_between(Iteration_step, Entropy.mean() - Entropy.std(), Entropy.mean() + Entropy.std(), facecolor='orange', alpha=0.3)
+plt.xlabel('Iteration Steps', fontsize=20)
+plt.ylabel('Training Prediction Accuracy', fontsize=20)
+plt.legend(fontsize=20)
 plt.grid(color='0.8')
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
-plt.title('Active Learning for Power Flow Solvability - IEEE 39-bus System', fontsize=16)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+# plt.title('Active Learning for Power Flow Solvability', fontsize=16)
 plt.show()
-
-
+# plt.tight_layout(pad=0.2, w_pad=0.2, h_pad=0.2)
+plt.tight_layout()
 
 

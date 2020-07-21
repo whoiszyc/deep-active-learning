@@ -50,7 +50,7 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
     NUM_ROUND = 10
     LEARNING_RATE = 1e-3
     BATCH_SIZE = 64
-    N_EPOCH = 50
+    N_EPOCH = 100
 
     DATA_NAME = 'psse'
     # DATA_NAME = 'MNIST'
@@ -212,11 +212,16 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
 
     # we enable visualization function if it is a 2-D problem
     if visual == True:
-        plt.figure(figsize=(9, 6))
+        plt.figure(figsize=(9, 7))
         plt.rcParams.update({'font.family': 'Arial'})
-        plt.title('Queried samples through active learning', fontsize=16)
-        plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], cmap=cmap_1, alpha=0.1)
+        # plt.title('Queried samples through active learning', fontsize=16)
+        # plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], cmap=cmap_1, alpha=0.1)
         plt.pause(1)
+        plt.grid(color='0.8')
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
+        plt.xlabel('Normalized Active Power Load at Bus 3', fontsize=20)
+        plt.ylabel('Normalized Active Power Load at Bus 4', fontsize=20)
 
 
     for rd in range(1, NUM_ROUND+1):
@@ -258,10 +263,33 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
     acc_pd = pd.DataFrame(acc_list)
     acc_pd.to_csv(FILENAME_CSV, index=False)
 
+    # plot the predicted boundary if visual is true
+    if visual == True:
+        x_min, x_max = x_tr[:, 0].min() - 0.1, x_tr[:, 0].max() + 0.1
+        y_min, y_max = x_tr[:, 1].min() - 0.1, x_tr[:, 1].max() + 0.1
+        # Set grid spacing parameter
+        spacing = min(x_max - x_min, y_max - y_min) / 200
+        # Create grid
+        XX, YY = np.meshgrid(np.arange(x_min, x_max, spacing),
+                             np.arange(y_min, y_max, spacing))
+        # Concatenate data to match input
+        data = np.hstack((XX.ravel().reshape(-1, 1),
+                          YY.ravel().reshape(-1, 1)))
+
+        # Pass data to predict method
+        data_len = data.shape[0]
+        data = torch.FloatTensor(data)
+        P = strategy.predict(data, y_tr[:data_len], logger)
+        clf = P
+        Z = clf.reshape(XX.shape)
+        plt.contourf(XX, YY, Z, 1, alpha=0.4, cmap=cmap_1, linewidth=5)
+        plt.show()
+        plt.tight_layout()
+
 
 if __name__ == '__main__':
     # method_list = ["RandomSampling", "LeastConfidence", 'MarginSampling']
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main('data/data_2d_pq_X.csv', 'data/data_2d_pq_Y.csv', para_seed=5, method="MarginSampling", result_dir="result_2d",  visual=True)
+    main('data/data_2d_pq_X.csv', 'data/data_2d_pq_Y.csv', para_seed=1, method="LeastConfidence", result_dir="result_2d",  visual=True)

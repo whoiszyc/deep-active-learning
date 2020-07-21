@@ -1,0 +1,85 @@
+2020-07-21 12:01:10 AM - INFO - main (115):  DATA NAME: psse
+2020-07-21 12:01:10 AM - INFO - main (116):  STRATEGY: MarginSampling
+2020-07-21 12:01:10 AM - INFO - main (117):  SEED: 1
+2020-07-21 12:01:10 AM - INFO - main (118):  NUM_INIT_LB: 100
+2020-07-21 12:01:10 AM - INFO - main (119):  NUM_QUERY: 20
+2020-07-21 12:01:10 AM - INFO - main (120):  NUM_ROUND: 10
+2020-07-21 12:01:10 AM - INFO - main (121):  LEARNING_RATE: 0.001
+2020-07-21 12:01:10 AM - INFO - main (122):  BATCH_SIZE: 64
+2020-07-21 12:01:10 AM - INFO - main (123):  N_EPOCH: 100
+2020-07-21 12:01:10 AM - INFO - get_local_csv (52):  Normalize dataset x
+2020-07-21 12:01:10 AM - INFO - get_local_csv (60):  Sample number: 
+2020-07-21 12:01:10 AM - INFO - get_local_csv (61):  Feature number: 
+2020-07-21 12:01:10 AM - INFO - get_local_csv (62):  Label number: 
+2020-07-21 12:01:10 AM - INFO - get_local_csv (66):  create balanced data
+2020-07-21 12:01:10 AM - INFO - get_local_csv (73):  Balance data numbers: 
+2020-07-21 12:01:10 AM - INFO - get_local_csv (78):  Using 60000.0 for training
+2020-07-21 12:01:10 AM - INFO - get_local_csv (91):  Test option 2: using the entire dataset
+2020-07-21 12:01:10 AM - INFO - predict (73):  Predict using untrained model
+2020-07-21 12:01:13 AM - INFO - main (196):  Initial testing accuracy 0.79235
+2020-07-21 12:01:13 AM - INFO - train (63):  Now train with 100 samples
+2020-07-21 12:05:20 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:05:24 AM - INFO - main (206):  Round 0 testing accuracy 0.96598
+2020-07-21 12:05:25 AM - INFO - main (229):  Round 1
+2020-07-21 12:05:25 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59900, 2])
+2020-07-21 12:05:28 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:05:32 AM - INFO - train (63):  Now train with 120 samples
+2020-07-21 12:09:24 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:09:27 AM - INFO - main (256):  testing accuracy 0.98313
+2020-07-21 12:09:27 AM - INFO - main (229):  Round 2
+2020-07-21 12:09:27 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59880, 2])
+2020-07-21 12:09:30 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:09:32 AM - INFO - train (63):  Now train with 140 samples
+2020-07-21 12:13:24 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:13:28 AM - INFO - main (256):  testing accuracy 0.98287
+2020-07-21 12:13:28 AM - INFO - main (229):  Round 3
+2020-07-21 12:13:28 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59860, 2])
+2020-07-21 12:13:31 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:13:32 AM - INFO - train (63):  Now train with 160 samples
+2020-07-21 12:17:47 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:17:51 AM - INFO - main (256):  testing accuracy 0.98819
+2020-07-21 12:17:51 AM - INFO - main (229):  Round 4
+2020-07-21 12:17:51 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59840, 2])
+2020-07-21 12:17:54 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:17:56 AM - INFO - train (63):  Now train with 180 samples
+2020-07-21 12:22:12 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:22:16 AM - INFO - main (256):  testing accuracy 0.99228
+2020-07-21 12:22:16 AM - INFO - main (229):  Round 5
+2020-07-21 12:22:16 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59820, 2])
+2020-07-21 12:22:19 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:22:21 AM - INFO - train (63):  Now train with 200 samples
+2020-07-21 12:26:37 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:26:41 AM - INFO - main (256):  testing accuracy 0.98886
+2020-07-21 12:26:41 AM - INFO - main (229):  Round 6
+2020-07-21 12:26:41 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59800, 2])
+2020-07-21 12:26:44 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:26:46 AM - INFO - train (63):  Now train with 220 samples
+2020-07-21 12:31:01 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:31:05 AM - INFO - main (256):  testing accuracy 0.98847
+2020-07-21 12:31:05 AM - INFO - main (229):  Round 7
+2020-07-21 12:31:05 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59780, 2])
+2020-07-21 12:31:08 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:31:09 AM - INFO - train (63):  Now train with 240 samples
+2020-07-21 12:35:35 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:35:39 AM - INFO - main (256):  testing accuracy 0.99099
+2020-07-21 12:35:39 AM - INFO - main (229):  Round 8
+2020-07-21 12:35:39 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59760, 2])
+2020-07-21 12:35:43 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:35:44 AM - INFO - train (63):  Now train with 260 samples
+2020-07-21 12:39:38 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:39:42 AM - INFO - main (256):  testing accuracy 0.9861
+2020-07-21 12:39:42 AM - INFO - main (229):  Round 9
+2020-07-21 12:39:42 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59740, 2])
+2020-07-21 12:39:46 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:39:47 AM - INFO - train (63):  Now train with 280 samples
+2020-07-21 12:43:54 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:43:58 AM - INFO - main (256):  testing accuracy 0.99416
+2020-07-21 12:43:58 AM - INFO - main (229):  Round 10
+2020-07-21 12:43:58 AM - DEBUG - predict_prob (102):  shape of probs is torch.Size([59720, 2])
+2020-07-21 12:44:01 AM - INFO - main (235):  Query 20 samples
+2020-07-21 12:44:02 AM - INFO - train (63):  Now train with 300 samples
+2020-07-21 12:48:00 AM - INFO - predict (77):  Predict using trained model
+2020-07-21 12:48:04 AM - INFO - main (256):  testing accuracy 0.99327
+2020-07-21 12:48:04 AM - INFO - main (261):  learning complete using 2813.9239604473114 seconds
+2020-07-21 12:48:04 AM - INFO - main (262):  write accuracy records into csv
+2020-07-21 12:48:04 AM - INFO - predict (77):  Predict using trained model
