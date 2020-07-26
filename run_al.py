@@ -47,7 +47,7 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
 
     NUM_INIT_LB = 100
     NUM_QUERY = 20
-    NUM_ROUND = 10
+    NUM_ROUND = 30
     LEARNING_RATE = 1e-3
     BATCH_SIZE = 64
     N_EPOCH = 100
@@ -214,8 +214,8 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
     if visual == True:
         plt.figure(figsize=(9, 7))
         plt.rcParams.update({'font.family': 'Arial'})
-        # plt.title('Queried samples through active learning', fontsize=16)
-        # plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], cmap=cmap_1, alpha=0.1)
+        plt.title('Queried samples through active learning', fontsize=16)
+        plt.scatter(x_tr[:5000, 0], x_tr[:5000, 1], c=y_tr[:5000], cmap=cmap_1, alpha=0.1)
         plt.pause(1)
         plt.grid(color='0.8')
         plt.xticks(fontsize=18)
@@ -223,7 +223,10 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
         plt.xlabel('Normalized Active Power Load at Bus 3', fontsize=20)
         plt.ylabel('Normalized Active Power Load at Bus 4', fontsize=20)
 
+    # define a list to store accuracy during AL
+    acc_in_al = []
 
+    # begine AL
     for rd in range(1, NUM_ROUND+1):
         print('Round {}'.format(rd))
         logger.info('Round {}'.format(rd))
@@ -257,6 +260,12 @@ def main(X_dir_file, Y_dir_file, para_seed=1, method=None, result_dir=None, visu
 
         # record acc to list
         acc_list.append(acc)
+        acc_in_al.append(acc)
+
+        # termination condition
+        if (rd >= 5) and (sum(acc_in_al[-4:])/4 >= 0.99):
+            logger.info('avergaed testing accuracy of last 4 steps achieves the termination condition at iteration {}'.format(rd))
+            break
 
     logger.info('learning complete using %s seconds' % (time.time() - start_time))
     logger.info('write accuracy records into csv')
@@ -292,4 +301,4 @@ if __name__ == '__main__':
     # for method in method_list:
     #     main(para_seed=1, method=method)
 
-    main('data/data_2d_pq_X.csv', 'data/data_2d_pq_Y.csv', para_seed=1, method="LeastConfidence", result_dir="result_2d",  visual=True)
+    main('data/data_2d_pq_X.csv', 'data/data_2d_pq_Y.csv', para_seed=1, method="RandomSampling", result_dir="result_2d",  visual=True)

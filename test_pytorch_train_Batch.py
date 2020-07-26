@@ -31,11 +31,11 @@ data preprocessing
 """
 print("read X Y data frame from csv")
 # # full dimensional case
-# data_x_all = pd.read_csv('data/data_x.csv')
-# data_y_all = pd.read_csv('data/data_y.csv')
+data_x_all = pd.read_csv('data/data_x.csv')
+data_y_all = pd.read_csv('data/data_y.csv')
 # two dimensional case
-data_x_all = pd.read_csv('data/data_x_2d.csv')
-data_y_all = pd.read_csv('data/data_y_2d.csv')
+# data_x_all = pd.read_csv('data/data_x_2d.csv')
+# data_y_all = pd.read_csv('data/data_y_2d.csv')
 
 # transfer data into matrices (tensor)
 print("convert data to numpy matrix")
@@ -56,8 +56,8 @@ Full_Data_eq = Full_Data_all[idx_eq]
 Full_Label_eq = Full_Label_all[idx_eq]
 
 # we use a small portion
-Full_Data = Full_Data_all
-Full_Label = Full_Label_all # [:100000]
+Full_Data = Full_Data_all[:400000]
+Full_Label = Full_Label_all[:400000] # [:100000]
 
 # get dimension
 n_sample, n_feature = Full_Data.shape
