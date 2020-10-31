@@ -70,7 +70,7 @@ def main():
     net = get_net(DATA_NAME)
     handler = get_handler(DATA_NAME)
 
-    # strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+    strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
@@ -78,7 +78,7 @@ def main():
     # strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-    strategy = KCenterGreedy(X_tr, Y_tr, idxs_lb, net, handler, args)
+    # strategy = KCenterGreedy(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = BALDDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
     # strategy = CoreSet(X_tr, Y_tr, idxs_lb, net, handler, args)
     # strategy = AdversarialBIM(X_tr, Y_tr, idxs_lb, net, handler, args, eps=0.05)
